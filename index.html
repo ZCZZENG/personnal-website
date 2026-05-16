@@ -6,964 +6,1152 @@
   <title>曾宸泽 · Chenze Zeng</title>
   <style>
     :root {
-      --bg:       #0b0a07;
-      --bg2:      #131108;
-      --bg3:      #1a1810;
-      --border:   rgba(164,129,17,0.15);
-      --border2:  rgba(255,255,255,0.06);
-      --text:     #f0ede4;
-      --muted:    #8a8270;
-      --faint:    #4a4438;
-      --gold:     #A48111;
-      --gold-lt:  #C9A527;
-      --gold-dim: rgba(164,129,17,0.12);
-      --gold-glow:rgba(164,129,17,0.25);
-      --green:    #6ab47b;
-      --page-w:   960px;
+      --bg:        #0b0a07;
+      --bg2:       #131108;
+      --bg3:       #1a1810;
+      --bg4:       #221f12;
+      --border:    rgba(164,129,17,0.18);
+      --border2:   rgba(255,255,255,0.06);
+      --text:      #f0ede4;
+      --muted:     #8a8270;
+      --faint:     #4a4438;
+      --gold:      #A48111;
+      --gold-lt:   #C9A527;
+      --gold-dim:  rgba(164,129,17,0.12);
+      --gold-glow: rgba(164,129,17,0.28);
+      --green:     #6ab47b;
+      --green-dim: rgba(106,180,123,0.1);
+      --purple:    #a78bfa;
+      --purple-dim:rgba(167,139,250,0.1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;overflow:hidden}
+    body{
+      background:var(--bg);color:var(--text);
+      font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;
+      line-height:1.7;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; overflow:hidden; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system,'PingFang SC','Helvetica Neue',sans-serif;
-      line-height: 1.7;
+    /* ── App Shell ── */
+    #app{width:100vw;height:100vh;position:relative;overflow:hidden}
+    .page{
+      position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+      opacity:0;pointer-events:none;transform:translateY(20px);
+      transition:opacity .35s ease,transform .35s ease;
     }
+    .page.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .page.exit{opacity:0;transform:translateY(-20px)}
 
-    /* ─── Page Shell ─── */
-    #app {
-      width:100vw; height:100vh;
-      position:relative; overflow:hidden;
-    }
-    .page {
-      position:absolute; inset:0;
-      overflow-y:auto; overflow-x:hidden;
-      opacity:0; pointer-events:none;
-      transform:translateY(24px);
-      transition:opacity .4s ease, transform .4s ease;
-    }
-    .page.active {
-      opacity:1; pointer-events:auto; transform:translateY(0);
-    }
-    .page.exit {
-      opacity:0; transform:translateY(-24px);
-    }
-
-    /* ─── Nav ─── */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:200;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:20px 48px;
-      background:rgba(11,10,7,0.8);
-      backdrop-filter:blur(20px);
+    /* ── Nav ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 44px;
+      background:rgba(11,10,7,.85);backdrop-filter:blur(20px);
       border-bottom:1px solid var(--border);
     }
-    .nav-logo {
-      font-size:15px; font-weight:700; letter-spacing:.06em;
-      color:var(--gold-lt); text-decoration:none; cursor:pointer;
+    .nav-logo{
+      font-size:14px;font-weight:700;letter-spacing:.08em;
+      color:var(--gold-lt);cursor:pointer;user-select:none;
     }
-    .nav-tabs {
-      display:flex; gap:4px; list-style:none;
-      background:var(--bg2); border:1px solid var(--border);
-      border-radius:10px; padding:4px;
+    .nav-tabs{
+      display:flex;gap:3px;list-style:none;
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:10px;padding:3px;
     }
-    .nav-tabs li {
-      padding:8px 22px; border-radius:7px; font-size:14px;
-      color:var(--muted); cursor:pointer;
-      transition:all .2s;
+    .nav-tabs li{
+      padding:7px 18px;border-radius:7px;font-size:13px;
+      color:var(--muted);cursor:pointer;transition:all .2s;
+      white-space:nowrap;
     }
-    .nav-tabs li:hover { color:var(--text); }
-    .nav-tabs li.active {
-      background:var(--gold-dim);
-      border:1px solid var(--border);
+    .nav-tabs li:hover{color:var(--text)}
+    .nav-tabs li.active{
+      background:var(--gold-dim);border:1px solid var(--border);
       color:var(--gold-lt);
     }
-    .nav-right {
-      display:flex; align-items:center; gap:16px;
-    }
-    .nav-link {
-      font-size:13px; color:var(--muted); text-decoration:none;
-      padding:8px 16px; border-radius:7px; border:1px solid var(--border);
+    .nav-right a{
+      font-size:13px;color:var(--muted);text-decoration:none;
+      padding:7px 16px;border-radius:7px;border:1px solid var(--border2);
       transition:all .2s;
     }
-    .nav-link:hover { color:var(--gold-lt); border-color:var(--gold-glow); }
+    .nav-right a:hover{color:var(--gold-lt);border-color:var(--border)}
 
-    /* ─── Page Container ─── */
-    .pg-wrap {
-      max-width:var(--page-w);
-      margin:0 auto; padding:140px 32px 80px;
+    /* ── Common Layout ── */
+    .wrap{max-width:960px;margin:0 auto;padding:0 32px}
+    .full-wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+    .eyebrow{
+      font-size:11px;font-weight:700;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--gold);margin-bottom:10px;
     }
-
-    /* ─── Typography ─── */
-    .eyebrow {
-      font-size:11px; font-weight:700; letter-spacing:.16em;
-      text-transform:uppercase; color:var(--gold);
-      margin-bottom:12px;
+    h2.sh{
+      font-size:clamp(30px,4vw,44px);font-weight:700;
+      letter-spacing:-.03em;margin-bottom:40px;
     }
-    h1.display {
-      font-size:clamp(52px,7vw,88px); font-weight:800;
-      letter-spacing:-.04em; line-height:1.0;
-      margin-bottom:28px;
+    .gold-text{
+      background:linear-gradient(135deg,var(--gold) 0%,var(--gold-lt) 55%,#e8c84a 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
-    .gold-text {
-      background:linear-gradient(135deg,var(--gold) 0%,var(--gold-lt) 60%,#e8c84a 100%);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-      background-clip:text;
+    .btn{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:11px 22px;border-radius:8px;font-size:13px;font-weight:500;
+      text-decoration:none;cursor:pointer;border:none;transition:all .2s;
     }
-    h2.section-h {
-      font-size:clamp(32px,4vw,48px); font-weight:700;
-      letter-spacing:-.03em; margin-bottom:48px;
-    }
-
-    /* ─── Btn ─── */
-    .btn {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:13px 26px; border-radius:9px;
-      font-size:14px; font-weight:500;
-      text-decoration:none; cursor:pointer; border:none;
-      transition:all .2s;
-    }
-    .btn-gold {
-      background:var(--gold); color:#0b0a07;
-    }
-    .btn-gold:hover { background:var(--gold-lt); transform:translateY(-1px); }
-    .btn-ghost {
-      background:transparent; color:var(--text);
-      border:1px solid var(--border2);
-    }
-    .btn-ghost:hover { border-color:var(--border); background:var(--bg2); }
-
-    /* ─────────────────────────────────────
-       PAGE 1 · INTRO
-    ───────────────────────────────────── */
-    #p1 { background:var(--bg); }
-
-    .hero-wrap {
-      min-height:calc(100vh - 80px);
-      display:flex; flex-direction:column;
-      justify-content:center;
-      padding:160px 48px 80px;
-      max-width:1200px; margin:0 auto;
-    }
-
-    .hero-status {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 16px; border-radius:100px;
-      background:var(--gold-dim); border:1px solid var(--border);
-      font-size:13px; color:var(--gold-lt); margin-bottom:36px;
-      width:fit-content;
-    }
-    .pulse-dot {
-      width:6px; height:6px; border-radius:50%;
-      background:var(--green);
+    .btn-gold{background:var(--gold);color:#0b0a07}
+    .btn-gold:hover{background:var(--gold-lt);transform:translateY(-1px)}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+    .btn-ghost:hover{border-color:var(--border);background:var(--bg2)}
+    .pulse-dot{
+      width:6px;height:6px;border-radius:50%;background:var(--green);
       animation:pulse 2.2s ease-in-out infinite;
     }
-    @keyframes pulse {
-      0%,100%{opacity:1;transform:scale(1)}
-      50%{opacity:.4;transform:scale(.8)}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .chip{
+      padding:4px 11px;border-radius:100px;font-size:12px;
+      background:var(--bg3);border:1px solid var(--border2);color:var(--text);
     }
+    .chip.gold{background:var(--gold-dim);border-color:var(--border);color:var(--gold-lt)}
+    .chip.green{background:var(--green-dim);border-color:rgba(106,180,123,.25);color:var(--green)}
+    .chip.purple{background:var(--purple-dim);border-color:rgba(167,139,250,.25);color:var(--purple)}
+    .m-chip{
+      padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;
+      background:var(--gold-dim);border:1px solid var(--border);color:var(--gold-lt);
+    }
+    .m-chip.g{background:var(--green-dim);border-color:rgba(106,180,123,.25);color:var(--green)}
+    .metrics{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 
-    .hero-sub {
-      font-size:18px; color:var(--muted); max-width:540px;
-      line-height:1.9; margin-bottom:40px;
+    /* ════════════════════════════════════
+       PAGE 1 · 介绍
+    ════════════════════════════════════ */
+    #p1{background:var(--bg)}
+    .hero-body{
+      max-width:1100px;margin:0 auto;
+      padding:152px 40px 80px;
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:64px;align-items:center;
+      min-height:100vh;
     }
+    .hero-left{}
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:5px 14px;border-radius:100px;
+      background:var(--gold-dim);border:1px solid var(--border);
+      font-size:12px;color:var(--gold-lt);margin-bottom:28px;
+      width:fit-content;
+    }
+    h1.hero-title{
+      font-size:clamp(44px,6vw,72px);font-weight:800;
+      letter-spacing:-.04em;line-height:1.05;margin-bottom:22px;
+    }
+    .hero-desc{
+      font-size:16px;color:var(--muted);max-width:460px;
+      line-height:1.9;margin-bottom:32px;
+    }
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+    .stats-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:1px;
+      background:var(--border);border:1px solid var(--border);border-radius:12px;
+      overflow:hidden;
+    }
+    .stat-cell{
+      background:var(--bg);padding:18px 22px;
+    }
+    .stat-num{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--gold-lt)}
+    .stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+    .hero-right{
+      display:flex;flex-direction:column;gap:14px;
+    }
+    .info-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:12px;padding:22px;transition:border-color .2s;
+    }
+    .info-card:hover{border-color:var(--border)}
+    .card-label{
+      font-size:10px;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--faint);margin-bottom:10px;
+    }
+    .info-card p{font-size:14px;color:var(--muted);line-height:1.8}
+    .chip-row{display:flex;flex-wrap:wrap;gap:7px}
 
-    .hero-actions { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:72px; }
-
-    /* Stats row */
-    .stats-row {
-      display:flex; gap:0; flex-wrap:wrap;
-      border:1px solid var(--border); border-radius:14px;
-      overflow:hidden; width:fit-content;
+    /* ════════════════════════════════════
+       PAGE 2 · 经历 (Horizontal timeline)
+    ════════════════════════════════════ */
+    #p2{background:var(--bg)}
+    .tl-pg{padding:120px 0 80px}
+    .tl-hdr{padding:0 40px 52px;max-width:960px;margin:0 auto}
+    .tl-rail-outer{
+      overflow-x:auto;overflow-y:visible;
+      padding:0 40px 40px;
+      scrollbar-width:thin;scrollbar-color:var(--border) transparent;
     }
-    .stat-cell {
-      padding:20px 36px;
-      border-right:1px solid var(--border);
+    .tl-rail-outer::-webkit-scrollbar{height:3px}
+    .tl-rail-outer::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .tl-rail{
+      display:flex;align-items:flex-start;
+      width:max-content;padding-top:52px;position:relative;
     }
-    .stat-cell:last-child { border-right:none; }
-    .stat-num {
-      font-size:30px; font-weight:800; letter-spacing:-.03em;
-      color:var(--gold-lt);
+    .tl-rail::before{
+      content:'';position:absolute;top:21px;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent 0%,var(--border) 3%,var(--border) 97%,transparent 100%);
     }
-    .stat-label {
-      font-size:12px; color:var(--muted); margin-top:2px;
+    .tl-node{
+      display:flex;flex-direction:column;align-items:flex-start;
+      width:268px;min-width:268px;padding:0 18px;position:relative;
     }
-
-    /* Cards row */
-    .cards-row {
-      display:grid; grid-template-columns:repeat(3,1fr);
-      gap:16px; margin-top:64px;
+    .tl-node:first-child{padding-left:0}
+    .tl-date{
+      position:absolute;top:-46px;left:18px;
+      font-size:11px;font-weight:600;letter-spacing:.05em;
+      color:var(--gold);white-space:nowrap;
     }
-    .info-card {
-      background:var(--bg2); border:1px solid var(--border2);
-      border-radius:12px; padding:24px;
-      transition:border-color .2s;
+    .tl-node:first-child .tl-date{left:0}
+    .tl-marker{
+      position:absolute;top:-42px;left:18px;
+      width:14px;height:14px;border-radius:50%;
+      background:var(--bg);border:2px solid var(--faint);
+      display:flex;align-items:center;justify-content:center;
     }
-    .info-card:hover { border-color:var(--border); }
-    .info-card-label {
-      font-size:11px; font-weight:600; letter-spacing:.1em;
-      text-transform:uppercase; color:var(--faint); margin-bottom:12px;
+    .tl-node:first-child .tl-marker{left:0}
+    .tl-marker.gold{border-color:var(--gold);background:var(--gold-dim);box-shadow:0 0 10px var(--gold-dim)}
+    .tl-marker.gold::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+    .tl-marker.green{border-color:var(--green);background:var(--green-dim)}
+    .tl-marker.green::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--green)}
+    .tl-marker.dim::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--faint)}
+    .tl-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:11px;padding:18px;margin-top:10px;width:100%;
+      transition:border-color .2s,transform .2s;
     }
-    .info-card p { font-size:14px; color:var(--text); line-height:1.8; }
-    .tag-wrap { display:flex; flex-wrap:wrap; gap:7px; }
-    .chip {
-      padding:4px 12px; border-radius:100px; font-size:12px;
-      background:var(--bg3); border:1px solid var(--border2);
-      color:var(--text);
-    }
-    .chip.gold {
-      background:var(--gold-dim); border-color:var(--border);
-      color:var(--gold-lt);
-    }
-    .chip.green {
-      background:rgba(106,180,123,.1); border-color:rgba(106,180,123,.25);
-      color:var(--green);
-    }
-
-    /* ─────────────────────────────────────
-       PAGE 2 · TIMELINE
-    ───────────────────────────────────── */
-    #p2 { background:var(--bg); }
-
-    .tl-pg-wrap {
-      padding:120px 0 80px;
-    }
-    .tl-header {
-      max-width:var(--page-w); margin:0 auto;
-      padding:0 48px 60px;
-    }
-
-    /* Horizontal rail */
-    .tl-rail-outer {
-      overflow-x:auto; overflow-y:visible;
-      padding:0 48px 48px;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:thin;
-      scrollbar-color:var(--border) transparent;
-    }
-    .tl-rail-outer::-webkit-scrollbar { height:4px; }
-    .tl-rail-outer::-webkit-scrollbar-track { background:transparent; }
-    .tl-rail-outer::-webkit-scrollbar-thumb {
-      background:var(--border); border-radius:2px;
-    }
-
-    .tl-rail {
-      display:flex; align-items:flex-start;
-      gap:0; position:relative;
-      width:max-content;
-      padding-top:56px;
-    }
-
-    /* The line */
-    .tl-rail::before {
-      content:'';
-      position:absolute; top:22px; left:0; right:0; height:1px;
-      background:linear-gradient(90deg,
-        transparent 0%,
-        var(--border) 4%,
-        var(--border) 96%,
-        transparent 100%);
-    }
-
-    .tl-node {
-      display:flex; flex-direction:column;
-      align-items:flex-start;
-      width:280px; min-width:280px;
-      padding:0 20px;
-      position:relative;
-    }
-    .tl-node:first-child { padding-left:0; }
-
-    /* Dot on the line */
-    .tl-marker {
-      position:absolute; top:-45px; left:20px;
-      width:16px; height:16px; border-radius:50%;
-      background:var(--bg);
-      border:2px solid var(--faint);
-      display:flex; align-items:center; justify-content:center;
-      transition:border-color .2s;
-    }
-    .tl-node:first-child .tl-marker { left:0; }
-    .tl-marker.gold {
-      border-color:var(--gold);
-      background:var(--gold-dim);
-      box-shadow:0 0 12px var(--gold-dim);
-    }
-    .tl-marker.gold::after {
-      content:''; width:6px; height:6px;
-      border-radius:50%; background:var(--gold);
-    }
-    .tl-marker.green {
-      border-color:var(--green);
-      background:rgba(106,180,123,.1);
-    }
-    .tl-marker.green::after {
-      content:''; width:6px; height:6px;
-      border-radius:50%; background:var(--green);
-    }
-    .tl-marker.dim::after {
-      content:''; width:4px; height:4px;
-      border-radius:50%; background:var(--faint);
-    }
-
-    /* Date label above dot */
-    .tl-date {
-      position:absolute; top:-70px; left:20px;
-      font-size:11px; font-weight:600; letter-spacing:.06em;
-      color:var(--gold); white-space:nowrap;
-    }
-    .tl-node:first-child .tl-date { left:0; }
-
-    /* Card below line */
-    .tl-card {
-      background:var(--bg2); border:1px solid var(--border2);
-      border-radius:12px; padding:20px;
-      margin-top:12px; width:100%;
-      transition:border-color .2s, transform .2s;
-    }
-    .tl-card:hover {
-      border-color:var(--border);
-      transform:translateY(-2px);
-    }
-    .tl-card-tag {
-      font-size:11px; font-weight:600; letter-spacing:.08em;
-      text-transform:uppercase; color:var(--gold);
-      margin-bottom:8px;
-    }
-    .tl-card-tag.g { color:var(--green); }
-    .tl-card h3 { font-size:15px; font-weight:600; margin-bottom:4px; }
-    .tl-card .role {
-      font-size:12px; color:var(--muted); margin-bottom:10px;
-    }
-    .tl-card p {
-      font-size:13px; color:var(--muted); line-height:1.8;
-    }
-    .metrics {
-      display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;
-    }
-    .m-chip {
-      padding:3px 9px; border-radius:6px;
-      font-size:11px; font-weight:600;
-      background:var(--gold-dim); border:1px solid var(--border);
-      color:var(--gold-lt);
-    }
-    .m-chip.g {
-      background:rgba(106,180,123,.1);
-      border-color:rgba(106,180,123,.25);
-      color:var(--green);
-    }
-
-    /* Certs row */
-    .certs-section {
-      max-width:var(--page-w); margin:0 auto;
-      padding:48px 48px 0;
+    .tl-card:hover{border-color:var(--border);transform:translateY(-2px)}
+    .tl-card-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+    .tl-card-tag.g{color:var(--green)}
+    .tl-card h3{font-size:14px;font-weight:600;margin-bottom:3px}
+    .tl-card .role{font-size:11px;color:var(--muted);margin-bottom:8px}
+    .tl-card p{font-size:12px;color:var(--muted);line-height:1.8}
+    .certs-row{
+      max-width:960px;margin:0 auto;padding:40px 40px 0;
       border-top:1px solid var(--border2);
     }
-    .certs-grid {
-      display:grid; grid-template-columns:repeat(4,1fr);
-      gap:14px; margin-top:28px;
+    .certs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+    .cert-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:9px;padding:16px;
+      font-size:12px;color:var(--muted);line-height:1.7;
     }
-    .cert-card {
-      background:var(--bg2); border:1px solid var(--border2);
-      border-radius:10px; padding:18px;
-      font-size:13px; color:var(--muted); line-height:1.7;
-    }
-    .cert-card strong { display:block; color:var(--text); margin-bottom:4px; font-size:14px; }
+    .cert-card strong{display:block;color:var(--text);font-size:13px;margin-bottom:3px}
 
-    /* ─────────────────────────────────────
-       PAGE 3 · WORK
-    ───────────────────────────────────── */
-    #p3 { background:var(--bg); }
-
-    .work-wrap {
-      max-width:1080px; margin:0 auto;
-      padding:140px 48px 80px;
+    /* ════════════════════════════════════
+       PAGE 3 · 作品
+    ════════════════════════════════════ */
+    #p3{background:var(--bg)}
+    .work-pg{max-width:1000px;margin:0 auto;padding:140px 40px 80px}
+    .feat-proj{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:14px;padding:32px;margin-bottom:18px;
+      position:relative;overflow:hidden;
     }
-
-    /* Featured project */
-    .featured-proj {
-      background:var(--bg2); border:1px solid var(--border);
-      border-radius:16px; padding:36px;
-      margin-bottom:20px; position:relative; overflow:hidden;
-    }
-    .featured-proj::after {
-      content:'';
-      position:absolute; top:0; left:0; right:0; height:2px;
+    .feat-proj::after{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
       background:linear-gradient(90deg,var(--gold),var(--gold-lt),#e8c84a);
     }
-    .proj-eyebrow {
-      font-size:11px; font-weight:700; letter-spacing:.14em;
-      text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+    .proj-ey{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .feat-proj h3{font-size:20px;font-weight:700;margin-bottom:6px}
+    .proj-role{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+    .proj-desc{font-size:14px;color:var(--muted);line-height:1.9;max-width:700px;margin-bottom:18px}
+    .proj-links{display:flex;gap:10px}
+    .proj-link{
+      font-size:12px;color:var(--gold-lt);text-decoration:none;
+      padding:6px 14px;border-radius:7px;border:1px solid var(--border);
+      display:flex;align-items:center;gap:4px;transition:all .2s;
     }
-    .featured-proj h3 {
-      font-size:22px; font-weight:700; margin-bottom:8px;
+    .proj-link:hover{background:var(--gold-dim);border-color:var(--gold-glow)}
+    .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:48px}
+    .proj-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:12px;padding:24px;transition:border-color .2s,transform .2s;
     }
-    .proj-role {
-      font-size:12px; color:var(--gold); font-weight:600;
-      letter-spacing:.06em; text-transform:uppercase; margin-bottom:14px;
+    .proj-card:hover{border-color:var(--border);transform:translateY(-2px)}
+    .proj-card .icon{font-size:22px;margin-bottom:12px}
+    .proj-card h3{font-size:15px;font-weight:600;margin-bottom:4px}
+    .proj-card .role{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+    .proj-card p{font-size:13px;color:var(--muted);line-height:1.8}
+    .skills-wrap{margin-top:48px}
+    .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .sk-g{background:var(--bg2);border:1px solid var(--border2);border-radius:11px;padding:18px}
+    .sk-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+    .sk-list{display:flex;flex-direction:column;gap:6px}
+    .sk-item{font-size:12px;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--border2)}
+    .sk-item:last-child{border-bottom:none}
+
+    /* ════════════════════════════════════
+       PAGE 4 · 学习
+    ════════════════════════════════════ */
+    #p4{background:var(--bg)}
+    .learn-pg{max-width:1000px;margin:0 auto;padding:140px 40px 80px}
+
+    /* Mentor cards */
+    .mentor-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px}
+    .mentor-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:14px;padding:28px;position:relative;overflow:hidden;
+      transition:border-color .25s,transform .25s;
     }
-    .proj-desc {
-      font-size:14px; color:var(--muted); line-height:1.9;
-      max-width:720px; margin-bottom:20px;
+    .mentor-card:hover{border-color:var(--border);transform:translateY(-3px)}
+    .mentor-card::before{
+      content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+      background:linear-gradient(to bottom,var(--gold),transparent);
+      opacity:0;transition:opacity .25s;
     }
-    .proj-links { display:flex; gap:14px; }
-    .proj-link {
-      font-size:13px; color:var(--gold-lt); text-decoration:none;
-      display:flex; align-items:center; gap:5px;
-      padding:7px 16px; border-radius:7px;
-      border:1px solid var(--border);
+    .mentor-card:hover::before{opacity:1}
+    .mentor-num{
+      font-size:11px;font-weight:700;letter-spacing:.1em;
+      color:var(--gold);margin-bottom:14px;
+    }
+    .mentor-card h3{font-size:18px;font-weight:700;margin-bottom:3px}
+    .mentor-alias{font-size:13px;color:var(--muted);margin-bottom:14px}
+    .mentor-tag{
+      display:inline-block;padding:3px 10px;border-radius:6px;
+      font-size:11px;background:var(--gold-dim);border:1px solid var(--border);
+      color:var(--gold-lt);margin-bottom:14px;
+    }
+    .mentor-impact{font-size:14px;color:var(--text);line-height:1.8;margin-bottom:14px}
+    .mentor-quote{
+      font-size:13px;color:var(--muted);font-style:italic;
+      padding-left:12px;border-left:2px solid var(--border);
+      line-height:1.7;
+    }
+
+    /* Reading section */
+    .reading-section{margin-bottom:56px}
+    .reading-grid{display:grid;grid-template-columns:1fr 2fr;gap:20px}
+    .book-card{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:14px;padding:28px;
+      display:flex;flex-direction:column;gap:16px;
+    }
+    .book-cover{
+      width:100%;aspect-ratio:3/4;background:var(--bg3);
+      border-radius:8px;display:flex;align-items:center;justify-content:center;
+      font-size:48px;border:1px solid var(--border2);
+    }
+    .book-info h4{font-size:16px;font-weight:600;margin-bottom:4px}
+    .book-info .author{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .book-info p{font-size:13px;color:var(--muted);line-height:1.8}
+    .shelf-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:14px;padding:28px;
+    }
+    .shelf-card h4{font-size:16px;font-weight:600;margin-bottom:8px}
+    .shelf-card .desc{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.8}
+    .shelf-books{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+      margin-bottom:20px;
+    }
+    .shelf-book{
+      background:var(--bg3);border:1px solid var(--border2);border-radius:9px;
+      padding:12px;font-size:12px;color:var(--muted);line-height:1.6;
+      display:flex;flex-direction:column;gap:4px;
+    }
+    .shelf-book strong{color:var(--text);font-size:13px}
+
+    /* Knowledge domains */
+    .domains-grid{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;
+    }
+    .domain-chip{
+      padding:8px 16px;border-radius:8px;font-size:13px;
+      background:var(--bg2);border:1px solid var(--border2);
+      color:var(--muted);transition:all .2s;cursor:default;
+    }
+    .domain-chip:hover{border-color:var(--border);color:var(--text)}
+
+    /* Listen section */
+    .listen-section{margin-bottom:0}
+    .listen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .listen-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:12px;padding:22px;transition:border-color .2s;
+    }
+    .listen-card:hover{border-color:var(--border)}
+    .listen-card .lc-icon{font-size:28px;margin-bottom:12px}
+    .listen-card h4{font-size:15px;font-weight:600;margin-bottom:4px}
+    .listen-card .lc-type{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+    .listen-card p{font-size:13px;color:var(--muted);line-height:1.8}
+
+    /* ════════════════════════════════════
+       PAGE 5 · 创作
+    ════════════════════════════════════ */
+    #p5{background:var(--bg)}
+    .create-pg{max-width:1000px;margin:0 auto;padding:140px 40px 80px}
+    .create-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+
+    /* Articles */
+    .articles-section{margin-bottom:24px}
+    .article-list{display:flex;flex-direction:column;gap:12px}
+    .article-card{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:11px;padding:20px;transition:border-color .2s,transform .15s;
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .article-card:hover{border-color:var(--border);transform:translateX(4px)}
+    .ac-meta{display:flex;align-items:center;gap:10px}
+    .ac-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:5px;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold-lt)}
+    .ac-date{font-size:11px;color:var(--faint)}
+    .article-card h4{font-size:15px;font-weight:600;line-height:1.4}
+    .article-card p{font-size:13px;color:var(--muted);line-height:1.7}
+
+    /* Weekly reflection */
+    .weekly-box{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:14px;padding:28px;margin-bottom:24px;
+      position:relative;overflow:hidden;
+    }
+    .weekly-box::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    }
+    .weekly-stat-row{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:1px;background:var(--border2);border:1px solid var(--border2);
+      border-radius:10px;overflow:hidden;margin:20px 0;
+    }
+    .wstat{background:var(--bg3);padding:14px 16px;text-align:center}
+    .wstat .n{font-size:22px;font-weight:800;color:var(--gold-lt)}
+    .wstat .l{font-size:11px;color:var(--muted);margin-top:2px}
+    .weekly-desc{font-size:14px;color:var(--muted);line-height:1.9}
+    .weekly-preview{
+      background:var(--bg3);border:1px solid var(--border2);
+      border-radius:9px;padding:16px;margin-top:16px;
+      font-size:13px;color:var(--muted);line-height:1.8;
+      border-left:3px solid var(--gold);
+    }
+    .weekly-preview strong{color:var(--text)}
+
+    /* Podcast */
+    .podcast-box{
+      background:var(--bg2);border:1px solid var(--border2);
+      border-radius:14px;padding:28px;
+    }
+    .podcast-header{display:flex;align-items:center;gap:20px;margin-bottom:20px}
+    .podcast-logo{
+      width:72px;height:72px;border-radius:14px;
+      background:var(--bg3);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-size:32px;flex-shrink:0;
+    }
+    .podcast-meta h3{font-size:20px;font-weight:700;margin-bottom:4px}
+    .podcast-meta .pm-sub{font-size:13px;color:var(--muted)}
+    .podcast-desc{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:20px}
+    .values-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .value-card{
+      background:var(--bg3);border:1px solid var(--border2);
+      border-radius:9px;padding:14px;
+    }
+    .value-card .vc-title{font-size:13px;font-weight:600;color:var(--gold-lt);margin-bottom:5px}
+    .value-card p{font-size:12px;color:var(--muted);line-height:1.7}
+
+    /* Contact footer bar */
+    .contact-bar{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:14px;padding:28px 32px;margin-top:24px;
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+    }
+    .contact-bar h3{font-size:18px;font-weight:600;margin-bottom:4px}
+    .contact-bar p{font-size:13px;color:var(--muted)}
+    .contact-links{display:flex;gap:8px;flex-wrap:wrap}
+    .contact-item{
+      display:flex;align-items:center;gap:8px;
+      padding:8px 16px;border-radius:8px;border:1px solid var(--border2);
+      font-size:13px;color:var(--muted);text-decoration:none;
       transition:all .2s;
     }
-    .proj-link:hover {
-      background:var(--gold-dim); border-color:var(--gold-glow);
-    }
+    .contact-item:hover{border-color:var(--border);color:var(--text)}
 
-    /* Projects grid */
-    .proj-grid {
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:16px; margin-bottom:56px;
-    }
-    .proj-card {
-      background:var(--bg2); border:1px solid var(--border2);
-      border-radius:14px; padding:28px;
-      transition:border-color .2s, transform .2s;
-    }
-    .proj-card:hover {
-      border-color:var(--border);
-      transform:translateY(-2px);
-    }
-    .proj-card .icon {
-      font-size:24px; margin-bottom:14px;
-    }
-    .proj-card h3 { font-size:16px; font-weight:600; margin-bottom:6px; }
-    .proj-card .role {
-      font-size:11px; color:var(--gold); font-weight:600;
-      letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px;
-    }
-    .proj-card p {
-      font-size:13px; color:var(--muted); line-height:1.8;
-    }
-
-    /* Skills */
-    .skills-section { margin-top:56px; }
-    .skills-grid {
-      display:grid; grid-template-columns:repeat(4,1fr);
-      gap:14px;
-    }
-    .skill-g {
-      background:var(--bg2); border:1px solid var(--border2);
-      border-radius:12px; padding:20px;
-    }
-    .skill-g-label {
-      font-size:11px; font-weight:700; letter-spacing:.1em;
-      text-transform:uppercase; color:var(--faint); margin-bottom:14px;
-    }
-    .skill-list {
-      display:flex; flex-direction:column; gap:7px;
-    }
-    .skill-item {
-      font-size:13px; color:var(--muted); padding:5px 0;
-      border-bottom:1px solid var(--border2);
-    }
-    .skill-item:last-child { border-bottom:none; }
-
-    /* Contact */
-    .contact-section {
-      margin-top:56px;
-      background:var(--bg2); border:1px solid var(--border);
-      border-radius:16px; padding:40px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:32px;
-    }
-    .contact-left h2 {
-      font-size:24px; font-weight:700; margin-bottom:8px;
-    }
-    .contact-left p {
-      font-size:14px; color:var(--muted); line-height:1.8;
-    }
-    .contact-links {
-      display:flex; flex-direction:column; gap:8px;
-      min-width:240px;
-    }
-    .contact-row {
-      display:flex; align-items:center; gap:10px;
-      font-size:13px; color:var(--muted);
-    }
-    .contact-row a {
-      color:var(--muted); text-decoration:none;
-    }
-    .contact-row a:hover { color:var(--gold-lt); }
-    .contact-icon {
-      width:28px; height:28px; border-radius:7px;
-      background:var(--bg3); border:1px solid var(--border2);
-      display:flex; align-items:center; justify-content:center;
-      font-size:13px; flex-shrink:0;
-    }
-
-    /* ─── Responsive ─── */
-    @media(max-width:700px){
-      nav { padding:14px 20px; }
-      .nav-tabs li { padding:7px 14px; font-size:13px; }
-      .hero-wrap, .work-wrap { padding:120px 20px 60px; }
-      h1.display { font-size:44px; }
-      .cards-row { grid-template-columns:1fr; }
-      .stats-row { flex-direction:column; width:100%; }
-      .stat-cell { border-right:none; border-bottom:1px solid var(--border); }
-      .stat-cell:last-child { border-bottom:none; }
-      .tl-rail-outer { padding:0 20px 48px; }
-      .tl-header, .certs-section { padding-left:20px; padding-right:20px; }
-      .certs-grid { grid-template-columns:1fr 1fr; }
-      .proj-grid { grid-template-columns:1fr; }
-      .skills-grid { grid-template-columns:1fr 1fr; }
-      .contact-section { flex-direction:column; }
+    /* ── Responsive ── */
+    @media(max-width:768px){
+      nav{padding:14px 18px}
+      .nav-tabs li{padding:6px 12px;font-size:12px}
+      .hero-body{grid-template-columns:1fr;gap:40px;padding:120px 20px 60px;min-height:auto}
+      .wrap,.full-wrap,.tl-hdr,.tl-rail-outer,.certs-row,
+      .work-pg,.learn-pg,.create-pg{padding-left:20px;padding-right:20px}
+      .mentor-grid,.reading-grid,.proj-grid{grid-template-columns:1fr}
+      .skills-grid,.certs-grid{grid-template-columns:1fr 1fr}
+      .listen-grid{grid-template-columns:1fr}
+      .create-cols{grid-template-columns:1fr}
+      .weekly-stat-row{grid-template-columns:1fr 1fr}
+      .values-grid{grid-template-columns:1fr}
+      .contact-bar{flex-direction:column;align-items:flex-start}
+      .shelf-books{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- ── Nav ── -->
-  <nav>
-    <span class="nav-logo" onclick="goPage(0)">ZCZ</span>
-    <ul class="nav-tabs">
-      <li class="active" onclick="goPage(0)">介绍</li>
-      <li onclick="goPage(1)">经历</li>
-      <li onclick="goPage(2)">作品</li>
-    </ul>
-    <div class="nav-right">
-      <a href="https://my.feishu.cn/docx/RbR0d6ZhBon65qxcXxecrLlhnuf" target="_blank" class="nav-link">个人说明书 ↗</a>
-    </div>
-  </nav>
+<!-- ── Nav ── -->
+<nav>
+  <span class="nav-logo" onclick="go(0)">ZCZ</span>
+  <ul class="nav-tabs" id="tabs">
+    <li class="active" onclick="go(0)">介绍</li>
+    <li onclick="go(1)">经历</li>
+    <li onclick="go(2)">作品</li>
+    <li onclick="go(3)">学习</li>
+    <li onclick="go(4)">创作</li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://my.feishu.cn/docx/RbR0d6ZhBon65qxcXxecrLlhnuf" target="_blank">个人说明书 ↗</a>
+  </div>
+</nav>
 
-  <!-- ══════════════════════════════════════
-       PAGE 1 · 介绍
-  ══════════════════════════════════════ -->
-  <div class="page active" id="p1">
-    <div class="hero-wrap">
-      <div class="hero-status">
+<!-- ════════════════════════
+     P1 · 介绍
+════════════════════════ -->
+<div class="page active" id="p1">
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-badge">
         <span class="pulse-dot"></span>
-        现开放实习机会 · 深圳 / 杭州 / 广州 / 成都
+        现开放实习 · 深圳 / 杭州 / 广州 / 成都
       </div>
-
-      <h1 class="display">
-        用产品思维<br>
-        解决<span class="gold-text">真问题</span>
+      <h1 class="hero-title">
+        用产品思维<br>解决<span class="gold-text">真问题</span>
       </h1>
-
-      <p class="hero-sub">
-        曾宸泽 · 重庆大学工业工程 · 2024 级<br>
+      <p class="hero-desc">
+        曾宸泽 · 重庆大学工业工程 2024 级<br>
         目标 AI 产品经理，习惯从数据和用户两端同时发力，
-        从信息不对称里看到产品机会。
+        从信息不对称里发现产品机会。
       </p>
-
       <div class="hero-actions">
-        <button class="btn btn-gold" onclick="goPage(1)">查看本科经历 →</button>
+        <button class="btn btn-gold" onclick="go(1)">查看本科经历 →</button>
         <a href="https://my.feishu.cn/docx/RbR0d6ZhBon65qxcXxecrLlhnuf" target="_blank" class="btn btn-ghost">个人说明书 ↗</a>
       </div>
-
-      <div class="stats-row">
+      <div class="stats-grid">
         <div class="stat-cell">
           <div class="stat-num">2 万+</div>
-          <div class="stat-label">单篇公众号阅读量</div>
+          <div class="stat-label">单篇公众号阅读</div>
         </div>
         <div class="stat-cell">
           <div class="stat-num">203 UV</div>
-          <div class="stat-label">独立产品上线首月</div>
+          <div class="stat-label">独立产品首月</div>
         </div>
         <div class="stat-cell">
           <div class="stat-num">3500+</div>
           <div class="stat-label">词 SFT 数据集</div>
         </div>
         <div class="stat-cell">
-          <div class="stat-num">60%</div>
-          <div class="stat-label">人工录入工作量减少</div>
+          <div class="stat-num">61 篇</div>
+          <div class="stat-label">周反馈连续记录</div>
         </div>
       </div>
-
-      <div class="cards-row">
-        <div class="info-card">
-          <div class="info-card-label">意向方向</div>
-          <div class="tag-wrap">
-            <span class="chip gold">AI 产品经理</span>
-            <span class="chip gold">toB 产品经理</span>
-            <span class="chip gold">数据产品</span>
-          </div>
+    </div>
+    <div class="hero-right">
+      <div class="info-card">
+        <div class="card-label">意向方向</div>
+        <div class="chip-row">
+          <span class="chip gold">AI 产品经理</span>
+          <span class="chip gold">toB 产品经理</span>
+          <span class="chip gold">数据产品</span>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">意向城市</div>
-          <div class="tag-wrap">
-            <span class="chip">深圳</span>
-            <span class="chip">杭州</span>
-            <span class="chip">广州</span>
-            <span class="chip">成都</span>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">内容运营</div>
-          <p>公众号 <strong>310+</strong> 关注，单篇 <strong>2 万</strong> 阅读；小红书求职帖 <strong>8300+</strong> 浏览</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">在校经历</div>
+        <p>就业中心助理管培生 · 实习 PM · 独立产品负责人 · 腾讯创造营</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">内容创作</div>
+        <p>公众号 <strong>310+ 关注</strong>，单篇最高 <strong>2 万</strong> 阅读；小红书求职帖 <strong>8300+</strong> 浏览；播客主理人</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">学习偏好</div>
+        <div class="chip-row">
+          <span class="chip">认知科学</span>
+          <span class="chip">长期主义</span>
+          <span class="chip">系统思维</span>
+          <span class="chip">产品方法论</span>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ══════════════════════════════════════
-       PAGE 2 · 经历
-  ══════════════════════════════════════ -->
-  <div class="page" id="p2">
-    <div class="tl-pg-wrap">
-      <div class="tl-header">
-        <div class="eyebrow">Timeline</div>
-        <h2 class="section-h">本科经历</h2>
+<!-- ════════════════════════
+     P2 · 经历
+════════════════════════ -->
+<div class="page" id="p2">
+  <div class="tl-pg">
+    <div class="tl-hdr">
+      <div class="eyebrow">Timeline</div>
+      <h2 class="sh">本科经历</h2>
+    </div>
+
+    <div class="tl-rail-outer">
+      <div class="tl-rail">
+
+        <div class="tl-node">
+          <div class="tl-date">2024.09</div>
+          <div class="tl-marker gold"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag">起点</div>
+            <h3>入学重庆大学</h3>
+            <div class="role">工业工程 · 机械与运载工程学院</div>
+            <p>工业工程的底子天然适合做产品——流程优化、系统思维、人机工程，后来全用上了。入学后开始试图搞清楚 AI 能干什么。</p>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2025.04</div>
+          <div class="tl-marker gold"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag">项目</div>
+            <h3>AI 单词「巧记」</h3>
+            <div class="role">数据负责人</div>
+            <p>主导 8 人团队完成 3500+ 词结构化标注，设计 13 种记忆方法分类体系，建立双层质控机制。</p>
+            <div class="metrics">
+              <span class="m-chip">8 人团队</span>
+              <span class="m-chip g">效率 ↑240%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2025.09</div>
+          <div class="tl-marker green"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag g">校内</div>
+            <h3>重庆大学就业中心</h3>
+            <div class="role">助理管培生</div>
+            <p>支持双选会运营（1000+ 企业、2 万+ 毕业生）。识别台账效率瓶颈，写 Python 脚本，人工录入减少 60%。</p>
+            <div class="metrics">
+              <span class="m-chip g">工作量减 60%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2025.11</div>
+          <div class="tl-marker gold"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag">升任</div>
+            <h3>AI 单词「巧记」</h3>
+            <div class="role">产品经理</div>
+            <p>升任 PM，主导完整产品设计——NFC 卡片 + 5 袋分档 + 小程序间隔复习体系，输出 PRD v2.0。</p>
+            <div class="metrics">
+              <span class="m-chip">PRD v2.0</span>
+              <span class="m-chip g">正确率 96%+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2025.12</div>
+          <div class="tl-marker gold"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag">独立产品</div>
+            <h3>毕业生去向系统</h3>
+            <div class="role">产品负责人 · 从 0 到 1</div>
+            <p>自主识别信息不对称问题，独立落地。34 学院、2 万+ 条数据，12 人定性访谈，6 项关键决策。</p>
+            <div class="metrics">
+              <span class="m-chip">12 人访谈</span>
+              <span class="m-chip g">转化 43%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2026.02</div>
+          <div class="tl-marker dim"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag">训练营</div>
+            <h3>腾讯未来 PM 创造营</h3>
+            <div class="role">进阶实战方向</div>
+            <p>需求分析 → PRD → 产品迭代结构化训练，输出可部署任务管理 Web Demo，获结营证书。</p>
+            <div class="metrics">
+              <span class="m-chip">结营证书</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2026.04</div>
+          <div class="tl-marker gold"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag">产品上线</div>
+            <h3>去向系统上线</h3>
+            <div class="role">Web + 飞书双版本</div>
+            <p>3 次线下宣讲。Vercel 访问受限后快速回退飞书版，可达性优先于功能完整性。</p>
+            <div class="metrics">
+              <span class="m-chip g">203 UV</span>
+              <span class="m-chip">复访 14.4%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-node">
+          <div class="tl-date">2026.05 · 至今</div>
+          <div class="tl-marker green"></div>
+          <div class="tl-card">
+            <div class="tl-card-tag g">实习</div>
+            <h3>沐晨人工智能科技</h3>
+            <div class="role">产品经理 · 核心成员</div>
+            <p>双线并行：主导「沐小音」数据集平台 0→1 设计；独立交付 HR 合同签署全链路自动化。</p>
+            <div class="metrics">
+              <span class="m-chip g">3 处 MVP gap</span>
+              <span class="m-chip">7 个竞品调研</span>
+            </div>
+          </div>
+        </div>
+
       </div>
+    </div>
 
-      <!-- Horizontal rail -->
-      <div class="tl-rail-outer">
-        <div class="tl-rail">
+    <div class="certs-row">
+      <div class="eyebrow">Certificates & Awards</div>
+      <div class="certs-grid">
+        <div class="cert-card">
+          <strong>腾讯未来 PM 创造营</strong>进阶实战方向结营证书
+        </div>
+        <div class="cert-card">
+          <strong>明月科创 MINI CAMP</strong>结营证书
+        </div>
+        <div class="cert-card">
+          <strong>电商三创赛</strong>校赛二等奖
+        </div>
+        <div class="cert-card">
+          <strong>挑战杯</strong>校赛优胜奖
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-          <!-- 入学 -->
-          <div class="tl-node">
-            <div class="tl-date">2024.09</div>
-            <div class="tl-marker gold"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag">起点</div>
-              <h3>入学重庆大学</h3>
-              <div class="role">工业工程 · 机械与运载工程学院</div>
-              <p>工业工程的底子——流程优化、系统思维——后来全都用上了。入学后开始试图搞清楚 AI 到底能干什么。</p>
-            </div>
-          </div>
+<!-- ════════════════════════
+     P3 · 作品
+════════════════════════ -->
+<div class="page" id="p3">
+  <div class="work-pg">
+    <div class="eyebrow">Work</div>
+    <h2 class="sh">代表作品</h2>
 
-          <!-- AI单词 数据 -->
-          <div class="tl-node">
-            <div class="tl-date">2025.04</div>
-            <div class="tl-marker gold"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag">项目</div>
-              <h3>AI 单词「巧记」</h3>
-              <div class="role">数据负责人</div>
-              <p>加入团队担任数据工程负责人，主导 8 人团队完成人教版 3500+ 词结构化标注，设计 13 种记忆方法分类体系。</p>
-              <div class="metrics">
-                <span class="m-chip g">3500+ 词标注</span>
-                <span class="m-chip">8 人团队</span>
-                <span class="m-chip g">效率 ↑240%</span>
-              </div>
-            </div>
-          </div>
+    <div class="feat-proj">
+      <div class="proj-ey">Featured Project</div>
+      <h3>毕业生去向分析系统</h3>
+      <div class="proj-role">产品负责人 · 独立从 0 到 1 · 2025.12 – 2026.04</div>
+      <p class="proj-desc">
+        重大就业系统历史数据以纯列表呈现，在校生无法识别去向结构规律。自主识别信息不对称问题，独立决策落地，4 个月完成数据工程（34 学院、2 万+ 条数据）、12 人定性访谈、6 项数据方案决策、产品迭代与自主推广全链路。3 次线下宣讲，即时触达转化率 43%；上线 1 个月 203 UV，58% 用户表示有效校准就业认知。
+      </p>
+      <div class="metrics" style="margin-bottom:18px">
+        <span class="m-chip">34 学院 · 2 万+ 数据</span>
+        <span class="m-chip">12 人定性访谈</span>
+        <span class="m-chip g">203 UV · 复访 14.4%</span>
+        <span class="m-chip g">触达转化 43%</span>
+      </div>
+      <div class="proj-links">
+        <a href="https://cqu-graduate-employment-destination.vercel.app/" target="_blank" class="proj-link">↗ Web 版</a>
+        <a href="https://my.feishu.cn/base/NIShb6YLSa5I4qssa28cTGOfnCf" target="_blank" class="proj-link">↗ 飞书版</a>
+      </div>
+    </div>
 
-          <!-- 就业中心 -->
-          <div class="tl-node">
-            <div class="tl-date">2025.09</div>
-            <div class="tl-marker green"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag g">校内</div>
-              <h3>重庆大学就业中心</h3>
-              <div class="role">助理管培生</div>
-              <p>支持秋招 / 春招双选会运营（1000+ 企业、2 万+ 毕业生）。识别台账处理效率瓶颈，写 Python 脚本优化流程。</p>
-              <div class="metrics">
-                <span class="m-chip">1000+ 企业</span>
-                <span class="m-chip g">人工量减少 60%</span>
-              </div>
-            </div>
-          </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="icon">🗂️</div>
+        <h3>AI 单词「巧记」硬件卡片</h3>
+        <div class="role">数据负责人 → PM · 2025.04–11</div>
+        <p>NFC 实体卡片 + 小程序 + 间隔复习体系。主导 8 人团队 3500+ 词标注，SFT 数据集正确率 96%+，生产效率 ↑240%。PRD v2.0 + 完整用户旅程图。</p>
+        <div class="metrics"><span class="m-chip g">3500+ 词</span><span class="m-chip">PRD v2.0</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="icon">⚙️</div>
+        <h3>HR 合同签署自动化工具</h3>
+        <div class="role">产品设计 + 独立交付 · 2026.05</div>
+        <p>识别合同签署依赖人工逐条跟进的效率瓶颈，设计飞书多维表格 → 法大大电子签 API → 状态轮询 → 结果回写全链路，UAT 全流程验证通过后移交上线。</p>
+        <div class="metrics"><span class="m-chip g">UAT 验证通过</span><span class="m-chip">法大大 API</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="icon">🗄️</div>
+        <h3>个人知识库 RAG 系统</h3>
+        <div class="role">独立搭建 · 工具积累</div>
+        <p>整合得到课程、公众号、电子书多源数据，完成爬取→清洗→结构化入库全链路，自建检索服务，已索引 3565+ 篇内容（蔡叔 + 万维钢）。</p>
+        <div class="metrics"><span class="m-chip">3565+ 篇</span><span class="m-chip g">全链路自建</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="icon">✍️</div>
+        <h3>公众号 & 小红书运营</h3>
+        <div class="role">个人 · PM 视角 · 持续至今</div>
+        <p>公众号 310+ 关注，单篇最高 2 万阅读，自建 AI 写作 Workflow（选题→结构→初稿→排版）；小红书求职帖 8300+ 浏览、近 50 条评论。</p>
+        <div class="metrics"><span class="m-chip g">单篇 2 万</span><span class="m-chip">310+ 关注</span></div>
+      </div>
+    </div>
 
-          <!-- AI单词 PM -->
-          <div class="tl-node">
-            <div class="tl-date">2025.11</div>
-            <div class="tl-marker gold"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag">升任</div>
-              <h3>AI 单词「巧记」</h3>
-              <div class="role">产品经理</div>
-              <p>升任产品经理，主导完整产品设计——NFC 卡片 + 5 袋分档 + 小程序间隔复习体系，输出 PRD v2.0。</p>
-              <div class="metrics">
-                <span class="m-chip">PRD v2.0</span>
-                <span class="m-chip g">SFT 数据集 96%+</span>
-              </div>
-            </div>
+    <div class="skills-wrap">
+      <div class="eyebrow" style="margin-bottom:18px">Skills</div>
+      <div class="skills-grid">
+        <div class="sk-g">
+          <div class="sk-label">AI & 自动化</div>
+          <div class="sk-list">
+            <div class="sk-item">Coze 智能体 / Workflow</div>
+            <div class="sk-item">影刀 RPA</div>
+            <div class="sk-item">Claude Code</div>
+            <div class="sk-item">RAG 系统搭建</div>
+            <div class="sk-item">飞书 API 自动化</div>
           </div>
-
-          <!-- 去向系统 -->
-          <div class="tl-node">
-            <div class="tl-date">2025.12</div>
-            <div class="tl-marker gold"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag">独立产品</div>
-              <h3>毕业生去向分析系统</h3>
-              <div class="role">产品负责人 · 从 0 到 1</div>
-              <p>自主识别信息不对称问题，独立决策落地。覆盖 34 学院、2 万+ 条数据，12 人定性访谈，6 项关键决策。</p>
-              <div class="metrics">
-                <span class="m-chip">34 学院</span>
-                <span class="m-chip">12 人访谈</span>
-                <span class="m-chip g">转化 43%</span>
-              </div>
-            </div>
+        </div>
+        <div class="sk-g">
+          <div class="sk-label">产品设计</div>
+          <div class="sk-list">
+            <div class="sk-item">Axure / 墨刀 / Figma</div>
+            <div class="sk-item">PRD 撰写</div>
+            <div class="sk-item">竞品分析</div>
+            <div class="sk-item">用户旅程图</div>
+            <div class="sk-item">定性访谈</div>
           </div>
-
-          <!-- 腾讯 -->
-          <div class="tl-node">
-            <div class="tl-date">2026.02</div>
-            <div class="tl-marker dim"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag">训练营</div>
-              <h3>腾讯未来 PM 创造营</h3>
-              <div class="role">进阶实战方向</div>
-              <p>完成需求分析 → PRD 撰写 → 产品迭代结构化训练，输出可部署任务管理 Web Demo，获结营证书。</p>
-              <div class="metrics">
-                <span class="m-chip">结营证书</span>
-              </div>
-            </div>
+        </div>
+        <div class="sk-g">
+          <div class="sk-label">数据 & 工程</div>
+          <div class="sk-list">
+            <div class="sk-item">Python（爬虫/清洗）</div>
+            <div class="sk-item">SQL</div>
+            <div class="sk-item">数据标注 & 质控</div>
+            <div class="sk-item">SFT 数据集构建</div>
+            <div class="sk-item">Excel</div>
           </div>
-
-          <!-- 去向系统上线 -->
-          <div class="tl-node">
-            <div class="tl-date">2026.04</div>
-            <div class="tl-marker gold"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag">产品上线</div>
-              <h3>去向系统上线</h3>
-              <div class="role">Web + 飞书双版本</div>
-              <p>3 次线下宣讲验证即时触达转化；Vercel 访问受限后快速回退飞书版本，可达性优先于功能完整性。</p>
-              <div class="metrics">
-                <span class="m-chip g">203 UV</span>
-                <span class="m-chip">复访 14.4%</span>
-                <span class="m-chip g">58% 有效校准认知</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 实习 -->
-          <div class="tl-node">
-            <div class="tl-date">2026.05 · 至今</div>
-            <div class="tl-marker green"></div>
-            <div class="tl-card">
-              <div class="tl-card-tag g">实习</div>
-              <h3>沐晨人工智能科技</h3>
-              <div class="role">产品经理 · 产品侧核心成员</div>
-              <p>双线并行：主导「沐小音」数据集平台从 0 到 1 设计；承接 HR 数字化工具需求，独立交付全链路自动化流程。</p>
-              <div class="metrics">
-                <span class="m-chip">7 个竞品调研</span>
-                <span class="m-chip g">识别 3 处 MVP gap</span>
-                <span class="m-chip">飞书→法大大自动化</span>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- end rail -->
-      </div><!-- end rail-outer -->
-
-      <!-- Certs -->
-      <div class="certs-section">
-        <div class="eyebrow">Certificates & Awards</div>
-        <div class="certs-grid">
-          <div class="cert-card">
-            <strong>腾讯未来 PM 创造营</strong>
-            进阶实战方向结营证书
-          </div>
-          <div class="cert-card">
-            <strong>明月科创 MINI CAMP</strong>
-            结营证书
-          </div>
-          <div class="cert-card">
-            <strong>电商三创赛</strong>
-            校赛二等奖
-          </div>
-          <div class="cert-card">
-            <strong>挑战杯</strong>
-            校赛优胜奖
+        </div>
+        <div class="sk-g">
+          <div class="sk-label">部署 & 工具</div>
+          <div class="sk-list">
+            <div class="sk-item">Vercel / GitHub</div>
+            <div class="sk-item">飞书多维表格</div>
+            <div class="sk-item">法大大 API</div>
+            <div class="sk-item">Obsidian / RAG</div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
+</div>
 
-  <!-- ══════════════════════════════════════
-       PAGE 3 · 作品
-  ══════════════════════════════════════ -->
-  <div class="page" id="p3">
-    <div class="work-wrap">
-      <div class="eyebrow">Work</div>
-      <h2 class="section-h">代表作品</h2>
+<!-- ════════════════════════
+     P4 · 学习
+════════════════════════ -->
+<div class="page" id="p4">
+  <div class="learn-pg">
+    <div class="eyebrow">Learning</div>
+    <h2 class="sh">影响我的人 & 我在读什么</h2>
 
-      <!-- Featured -->
-      <div class="featured-proj">
-        <div class="proj-eyebrow">Featured Project</div>
-        <h3>毕业生去向分析系统</h3>
-        <div class="proj-role">产品负责人 · 独立从 0 到 1 · 2025.12 – 2026.04</div>
-        <p class="proj-desc">
-          重大就业系统历史数据以纯列表呈现，在校生无法识别去向结构规律、只能靠口耳相传。
-          自主识别信息不对称问题，独立决策落地，历时 4 个月完成数据工程、用户研究、产品迭代与自主推广全链路。
-          覆盖全校 34 学院、2 万+ 条去向数据。3 次线下宣讲，即时触达转化率 43%；上线 1 个月 203 UV，58% 用户表示有效校准就业认知。
+    <!-- Mentors -->
+    <div class="mentor-grid">
+
+      <div class="mentor-card">
+        <div class="mentor-num">01 · 影响最深</div>
+        <h3>王振宇</h3>
+        <div class="mentor-alias">王哥 · 前哨战主理人</div>
+        <span class="mentor-tag">视野同步</span>
+        <p class="mentor-impact">
+          每周同步最新认知，聚集了一批相当优秀的同龄人。
+          通过王哥的社群，我第一次意识到同龄人可以做到这么多事，
+          也第一次系统接触到"产品思维应用于生活"这件事。
+          是我本科以来最重要的贵人。
         </p>
-        <div class="metrics" style="margin-bottom:20px">
-          <span class="m-chip">12 人定性访谈</span>
-          <span class="m-chip">34 学院 · 2 万+ 条数据</span>
-          <span class="m-chip g">203 UV · 复访 14.4%</span>
-          <span class="m-chip g">触达转化 43%</span>
-        </div>
-        <div class="proj-links">
-          <a href="https://cqu-graduate-employment-destination.vercel.app/" target="_blank" class="proj-link">↗ Web 版</a>
-          <a href="https://my.feishu.cn/base/NIShb6YLSa5I4qssa28cTGOfnCf" target="_blank" class="proj-link">↗ 飞书版</a>
-        </div>
+        <p class="mentor-quote">
+          "国人在世界内想着低价、免费、白嫖，这让各大国际平台都看不起——你不为好的产品付费，人家只能接广告，那你就得用时间、精力或情绪来付代价。"
+        </p>
       </div>
 
-      <!-- Grid -->
-      <div class="proj-grid">
-        <div class="proj-card">
-          <div class="icon">🗂️</div>
-          <h3>AI 单词「巧记」硬件卡片</h3>
-          <div class="role">数据负责人 → 产品经理 · 2025.04–11</div>
-          <p>NFC 实体卡片 + 小程序 + 间隔复习体系。主导 8 人团队 3500+ 词结构化标注，SFT 数据集正确率 96%+，生产效率提升 240%。产出 PRD v2.0 与完整用户旅程图。</p>
-          <div class="metrics">
-            <span class="m-chip g">3500+ 词</span>
-            <span class="m-chip">PRD v2.0</span>
+      <div class="mentor-card">
+        <div class="mentor-num">02 · 认知底层</div>
+        <h3>万维钢</h3>
+        <div class="mentor-alias">精英日课主理人 · 得到</div>
+        <span class="mentor-tag">科学认知框架</span>
+        <p class="mentor-impact">
+          精英日课 1–6 季 + 现代思维工具 100 讲，用科学视角重新解读世界——
+          贝叶斯更新、概率直觉、系统思维。
+          我的 Obsidian 知识库里索引了 2045 篇万维钢笔记，
+          是我认知升级最重要的内容基础设施。
+        </p>
+        <p class="mentor-quote">
+          "精英的本质不是拥有更多资源，而是拥有更好的思维工具——面对同样的信息，得出不同质量的判断。"
+        </p>
+      </div>
+
+      <div class="mentor-card">
+        <div class="mentor-num">03 · 行动哲学</div>
+        <h3>李笑来</h3>
+        <div class="mentor-alias">《把时间当作朋友》作者</div>
+        <span class="mentor-tag">长期主义</span>
+        <p class="mentor-impact">
+          长期主义的践行者。"正确的事，重复做"——
+          这句话是我坚持写周反馈、坚持公众号、坚持锻炼的底层逻辑。
+          他的书让我意识到，耐心本身就是一种稀缺能力，
+          不是放弃进步，而是在更长的时间维度上选择。
+        </p>
+        <p class="mentor-quote">
+          "你与其花时间焦虑，不如把那些时间用来提高自己的能力，因为焦虑解决不了任何问题。"
+        </p>
+      </div>
+
+      <div class="mentor-card">
+        <div class="mentor-num">04 · 独立思考</div>
+        <h3>蔡垒磊</h3>
+        <div class="mentor-alias">蔡叔 · 认知与成长创作者</div>
+        <span class="mentor-tag">反共识 · 理性消费</span>
+        <p class="mentor-impact">
+          从不媚俗、不迎合，用理性拆解那些"看起来对"但实际上错的常识。
+          我的知识库里索引了他 1520 篇文章，
+          是我形成"独立判断 > 从众"这一核心价值观的重要参照。
+        </p>
+        <p class="mentor-quote">
+          "大多数人的痛苦，来自于他们不想做一个普通人，但又没有做一个非普通人的勇气和代价认知。"
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Reading -->
+    <div class="reading-section">
+      <div class="eyebrow" style="margin-bottom:16px">书架 · Reading</div>
+      <div class="reading-grid">
+        <!-- Featured book -->
+        <div class="book-card">
+          <div class="book-cover">📖</div>
+          <div class="book-info">
+            <h4>Asking the Right Questions</h4>
+            <div class="author">M. Neil Browne · Stuart M. Keeley · 在读</div>
+            <p>批判性思维的教科书。中文版叫《学会提问》，我选择读英文原版——一方面练英语，一方面避免翻译损失。</p>
+            <div style="margin-top:12px">
+              <!-- 填入你的微信读书书架链接 -->
+              <a href="https://weread.qq.com/" target="_blank" class="btn btn-ghost" style="font-size:12px;padding:8px 16px">打开微信读书书架 ↗</a>
+            </div>
           </div>
         </div>
-
-        <div class="proj-card">
-          <div class="icon">✍️</div>
-          <h3>内容运营 · 公众号 & 小红书</h3>
-          <div class="role">个人运营 · 持续至今</div>
-          <p>公众号 310+ 关注，单篇最高 2 万阅读，自建 AI 写作工作流（选题→结构→初稿→排版全链路）。小红书以 PM 视角运营，求职帖 8300+ 浏览、50 条评论。</p>
-          <div class="metrics">
-            <span class="m-chip g">单篇 2 万</span>
-            <span class="m-chip">310+ 关注</span>
+        <!-- Bookshelf -->
+        <div class="shelf-card">
+          <h4>推荐书单</h4>
+          <p class="desc">这些书真正改变了我的思维方式，不是"读过"而是"用过"的那种。</p>
+          <div class="shelf-books">
+            <div class="shelf-book">
+              <strong>把时间当作朋友</strong>
+              李笑来 · 行动哲学
+            </div>
+            <div class="shelf-book">
+              <strong>学会提问</strong>
+              Browne & Keeley · 批判性思维
+            </div>
+            <div class="shelf-book">
+              <strong>精英日课</strong>
+              万维钢 · 认知框架
+            </div>
+            <div class="shelf-book">
+              <strong>这是我的战争</strong>
+              游戏 · 选择代价
+            </div>
+            <div class="shelf-book">
+              <strong>穷查理宝典</strong>
+              Munger · 多元思维模型
+            </div>
+            <div class="shelf-book">
+              <strong>反脆弱</strong>
+              Nassim Taleb · 系统韧性
+            </div>
           </div>
-        </div>
-
-        <div class="proj-card">
-          <div class="icon">⚙️</div>
-          <h3>HR 数字化自动化工具</h3>
-          <div class="role">产品设计 + 独立交付 · 2026.05</div>
-          <p>识别入职流程中合同签署依赖人工逐条跟进的效率瓶颈，设计飞书多维表格条件筛选 → 法大大电子签 API → 状态轮询 → 结果回写全链路自动化，UAT 通过后移交上线。</p>
-          <div class="metrics">
-            <span class="m-chip g">UAT 全流程验证</span>
-            <span class="m-chip">法大大 API</span>
-          </div>
-        </div>
-
-        <div class="proj-card">
-          <div class="icon">🗄️</div>
-          <h3>个人知识库 RAG 系统</h3>
-          <div class="role">独立搭建 · 工具技能</div>
-          <p>整合得到课程、公众号文章、电子书多源数据，完成爬取/解析→数据清洗→结构化入库全链路。自建 OpenViking 知识检索服务，已索引 3500+ 篇内容。</p>
-          <div class="metrics">
-            <span class="m-chip">3500+ 篇</span>
-            <span class="m-chip g">全链路自建</span>
+          <div class="eyebrow" style="margin-top:20px;margin-bottom:12px">知识库覆盖领域</div>
+          <div class="domains-grid">
+            <span class="domain-chip">认知与思维</span>
+            <span class="domain-chip">成长与规划</span>
+            <span class="domain-chip">财富与资产</span>
+            <span class="domain-chip">历史与战略</span>
+            <span class="domain-chip">工具与方法</span>
+            <span class="domain-chip">设计与用研</span>
+            <span class="domain-chip">人与关系</span>
+            <span class="domain-chip">技术与工程</span>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Skills -->
-      <div class="skills-section">
-        <div class="eyebrow" style="margin-bottom:20px">Skills</div>
-        <div class="skills-grid">
-          <div class="skill-g">
-            <div class="skill-g-label">AI & 自动化</div>
-            <div class="skill-list">
-              <div class="skill-item">Coze 智能体 / Workflow</div>
-              <div class="skill-item">影刀 RPA</div>
-              <div class="skill-item">Claude Code</div>
-              <div class="skill-item">RAG 系统搭建</div>
-              <div class="skill-item">飞书 API 自动化</div>
-            </div>
-          </div>
-          <div class="skill-g">
-            <div class="skill-g-label">产品设计</div>
-            <div class="skill-list">
-              <div class="skill-item">Axure / 墨刀 / Figma</div>
-              <div class="skill-item">PRD 撰写</div>
-              <div class="skill-item">竞品分析</div>
-              <div class="skill-item">用户旅程图</div>
-              <div class="skill-item">定性访谈</div>
-            </div>
-          </div>
-          <div class="skill-g">
-            <div class="skill-g-label">数据 & 工程</div>
-            <div class="skill-list">
-              <div class="skill-item">Python（爬虫/清洗）</div>
-              <div class="skill-item">SQL</div>
-              <div class="skill-item">数据标注 & 质控</div>
-              <div class="skill-item">SFT 数据集构建</div>
-              <div class="skill-item">Excel</div>
-            </div>
-          </div>
-          <div class="skill-g">
-            <div class="skill-g-label">部署 & 协作</div>
-            <div class="skill-list">
-              <div class="skill-item">Vercel / GitHub</div>
-              <div class="skill-item">飞书多维表格</div>
-              <div class="skill-item">法大大 API</div>
-              <div class="skill-item">Obsidian</div>
-            </div>
-          </div>
+    <!-- Listen -->
+    <div class="listen-section">
+      <div class="eyebrow" style="margin-bottom:16px">在听 · Listening</div>
+      <div class="listen-grid">
+        <div class="listen-card">
+          <div class="lc-icon">📡</div>
+          <h4>前哨战</h4>
+          <div class="lc-type">每周同步</div>
+          <p>王振宇主理，每周同步最前沿的认知、商业洞察与趋势判断。是我最稳定的认知输入源。</p>
+        </div>
+        <div class="listen-card">
+          <div class="lc-icon">🎓</div>
+          <h4>精英日课</h4>
+          <div class="lc-type">得到 · 深度学习</div>
+          <p>万维钢用科学视角重读世界。1-6季 + 现代思维工具100讲，已全部入库笔记索引系统。</p>
+        </div>
+        <div class="listen-card">
+          <div class="lc-icon">🎙️</div>
+          <h4>你在听什么？</h4>
+          <div class="lc-type">待更新</div>
+          <p style="font-style:italic">这里可以补充你日常在听的播客、博主或内容创作者——填入后更新即可。</p>
         </div>
       </div>
+    </div>
 
-      <!-- Contact -->
-      <div class="contact-section">
-        <div class="contact-left">
-          <h2>开放实习机会</h2>
-          <p>
-            AI / toB / 数据产品方向<br>
-            深圳 · 杭州 · 广州 · 成都
+  </div>
+</div>
+
+<!-- ════════════════════════
+     P5 · 创作
+════════════════════════ -->
+<div class="page" id="p5">
+  <div class="create-pg">
+    <div class="eyebrow">Creation</div>
+    <h2 class="sh">我在写什么 & 做什么</h2>
+
+    <!-- Articles -->
+    <div class="articles-section">
+      <div class="eyebrow" style="margin-bottom:16px">公众号 · 代表文章</div>
+      <div class="article-list">
+
+        <div class="article-card">
+          <div class="ac-meta">
+            <span class="ac-tag">产品思维</span>
+            <span class="ac-date">大二 · 2万阅读</span>
+          </div>
+          <h4>好产品与坏产品：短期爽感，还是长期选择权</h4>
+          <p>从一张机票开始，重新思考了什么是好产品。好的产品节约你的时间、塑造价值观、让你有更多选择；坏的产品消磨时间、利用人性，让你在不知不觉中把选择权交出去。</p>
+        </div>
+
+        <div class="article-card">
+          <div class="ac-meta">
+            <span class="ac-tag">成长认知</span>
+            <span class="ac-date">大二</span>
+          </div>
+          <h4>别人是别人，你是你：我如何用产品思维对抗成长焦虑</h4>
+          <p>用产品经理的视角重构成长焦虑——你不是在"落后"，你是在用别人的 KPI 衡量自己的 roadmap。</p>
+        </div>
+
+        <div class="article-card">
+          <div class="ac-meta">
+            <span class="ac-tag">原创框架</span>
+            <span class="ac-date">大二 · 自创方法论</span>
+          </div>
+          <h4>3L 模型：用"用户生活—企业基础—技术底座"三维视角评价大厂</h4>
+          <p>自创评价大厂的三维分析框架：L1 用户生活（产品触达用户的方式）/ L2 企业基础（商业模式与壁垒）/ L3 技术底座（核心技术能力）。用框架代替直觉判断。</p>
+        </div>
+
+        <div class="article-card">
+          <div class="ac-meta">
+            <span class="ac-tag">人际关系</span>
+            <span class="ac-date">大一 · 8300+ 浏览</span>
+          </div>
+          <h4>向上社交：构建高效人际关系的艺术</h4>
+          <p>不是教你如何"交换利益"，而是如何在真实的人际关系里保持主体性——你选择链接的人，决定你能看到的世界边界。</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="create-cols" style="margin-top:24px">
+
+      <!-- Weekly reflection -->
+      <div>
+        <div class="eyebrow" style="margin-bottom:16px">周反馈 · 连续记录</div>
+        <div class="weekly-box">
+          <p style="font-size:14px;color:var(--muted);line-height:1.8">
+            从大一第一周开始，每周写一篇周反馈。不是日记，是结构化的自我复盘——
+            记录这一周做了什么、学到了什么、哪些判断是错的。
+            它是我对"长期主义"最实际的践行。
           </p>
-          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-            <a href="https://my.feishu.cn/docx/RbR0d6ZhBon65qxcXxecrLlhnuf" target="_blank" class="btn btn-gold" style="font-size:13px;padding:10px 20px">个人说明书 ↗</a>
-            <a href="mailto:443829039@qq.com" class="btn btn-ghost" style="font-size:13px;padding:10px 20px">发邮件</a>
+          <div class="weekly-stat-row">
+            <div class="wstat"><div class="n">61</div><div class="l">总篇数</div></div>
+            <div class="wstat"><div class="n">18</div><div class="l">大一上</div></div>
+            <div class="wstat"><div class="n">13</div><div class="l">大一下</div></div>
+            <div class="wstat"><div class="n">30</div><div class="l">大二</div></div>
+          </div>
+          <div class="weekly-preview">
+            <strong>最近一篇节选：</strong><br>
+            "如果说上一周是部分的结束，那这一周的结束会更完整，更彻底。这次选择结束合作，并不是情绪化的否定，而是一次理性的结案。这次吃亏是福。认错。然后，继续向前走。"
           </div>
         </div>
-        <div class="contact-links">
-          <div class="contact-row">
-            <div class="contact-icon">📱</div>
-            17783882714
+      </div>
+
+      <!-- Podcast -->
+      <div>
+        <div class="eyebrow" style="margin-bottom:16px">播客 · 自变量</div>
+        <div class="podcast-box">
+          <div class="podcast-header">
+            <div class="podcast-logo">🎙</div>
+            <div class="podcast-meta">
+              <h3>自变量</h3>
+              <div class="pm-sub">主持人：曾宸泽 · 访谈型播客</div>
+            </div>
           </div>
-          <div class="contact-row">
-            <div class="contact-icon">✉️</div>
-            <a href="mailto:443829039@qq.com">443829039@qq.com</a>
-          </div>
-          <div class="contact-row">
-            <div class="contact-icon">🐙</div>
-            <a href="https://github.com/ZCZZENG" target="_blank">github.com/ZCZZENG</a>
+          <p class="podcast-desc">
+            一档围绕"选择—代价—结果"关系的长期实验。
+            不追逐成功叙事，而是通过结构化提问，拆解嘉宾在关键阶段中
+            调整过的决策、方法与行动。每一期，都尝试回答：
+            当时改变了哪个变量？付出了什么代价？哪些经验具备可迁移性？
+          </p>
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="vc-title">可控性</div>
+              <p>只讨论当事人能主动调整的因素，不把结果归因给运气或背景。</p>
+            </div>
+            <div class="value-card">
+              <div class="vc-title">代价真实</div>
+              <p>每个选择必须说清楚付出了什么，不接受"只讲好处不讲代价"。</p>
+            </div>
+            <div class="value-card">
+              <div class="vc-title">可迁移性</div>
+              <p>不是"你怎么成功的"，而是"哪些部分换一个人仍然成立"。</p>
+            </div>
+            <div class="value-card">
+              <div class="vc-title">长期主义</div>
+              <p>关注半年 / 一年 / 三年后的影响，拒绝短期刺激与速成叙事。</p>
+            </div>
           </div>
         </div>
       </div>
 
     </div>
-  </div>
 
-</div><!-- end app -->
+    <!-- Contact bar -->
+    <div class="contact-bar">
+      <div>
+        <h3>开放实习机会</h3>
+        <p>AI / toB / 数据产品 · 深圳 · 杭州 · 广州 · 成都</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:443829039@qq.com" class="contact-item">✉️ 443829039@qq.com</a>
+        <a href="https://github.com/ZCZZENG" target="_blank" class="contact-item">🐙 ZCZZENG</a>
+        <span class="contact-item">📱 17783882714</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- #app -->
 
 <script>
-  const pages = ['p1','p2','p3'];
-  const tabs = document.querySelectorAll('.nav-tabs li');
-  let current = 0;
+  const pages = ['p1','p2','p3','p4','p5'];
+  const tabs = document.querySelectorAll('#tabs li');
+  let cur = 0;
 
-  function goPage(idx) {
-    if (idx === current) return;
-
-    const from = document.getElementById(pages[current]);
+  function go(idx) {
+    if (idx === cur) return;
+    const from = document.getElementById(pages[cur]);
     const to   = document.getElementById(pages[idx]);
-
     from.classList.add('exit');
     setTimeout(() => {
       from.classList.remove('active','exit');
       to.classList.add('active');
-      // Reset scroll
       to.scrollTop = 0;
     }, 120);
-
     tabs.forEach((t,i) => t.classList.toggle('active', i === idx));
-    current = idx;
+    cur = idx;
   }
 
-  // Allow nav logo to always work
-  document.querySelector('.nav-logo').onclick = () => goPage(0);
+  document.querySelector('.nav-logo').onclick = () => go(0);
 
-  // Keyboard nav
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' && current < 2) goPage(current + 1);
-    if (e.key === 'ArrowLeft'  && current > 0) goPage(current - 1);
+    if (e.key === 'ArrowRight' && cur < pages.length - 1) go(cur + 1);
+    if (e.key === 'ArrowLeft'  && cur > 0) go(cur - 1);
   });
 </script>
 </body>
