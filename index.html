@@ -466,13 +466,70 @@
     }
     .contact-item:hover{border-color:var(--border);color:var(--text)}
 
+    /* ════════════════════════════════════
+       PAGE 6 · 足迹（大学编年线）
+    ════════════════════════════════════ */
+    #p6{background:var(--bg)}
+    .chron-pg{max-width:880px;margin:0 auto;padding:140px 40px 80px}
+    .chron-intro{
+      font-size:14px;color:var(--muted);line-height:1.9;
+      max-width:640px;margin-bottom:18px;
+    }
+    .chron-src-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:56px}
+    .chron-src{
+      font-size:12px;color:var(--muted);
+      padding:6px 14px;border-radius:8px;
+      background:var(--bg2);border:1px solid var(--border2);
+    }
+    .chron-src strong{color:var(--gold-lt);font-weight:700}
+    .chapter{margin-bottom:64px}
+    .chapter-hd{margin-bottom:28px}
+    .chapter-period{
+      font-size:11px;font-weight:700;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--gold);margin-bottom:6px;
+    }
+    .chapter-hd h3{font-size:24px;font-weight:700;letter-spacing:-.02em}
+    .chapter-hd .chapter-sub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.8}
+    .vtl{position:relative;padding-left:28px}
+    .vtl::before{
+      content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;
+      background:linear-gradient(to bottom,var(--border),var(--border2));
+    }
+    .vtl-item{position:relative;padding-bottom:26px}
+    .vtl-item:last-child{padding-bottom:0}
+    .vtl-item::before{
+      content:'';position:absolute;left:-26px;top:7px;
+      width:9px;height:9px;border-radius:50%;
+      background:var(--bg);border:2px solid var(--gold);
+    }
+    .vtl-item.dim::before{border-color:var(--faint)}
+    .vtl-date{
+      font-size:11px;font-weight:700;letter-spacing:.06em;
+      color:var(--gold);margin-bottom:4px;
+    }
+    .vtl-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+    .vtl-item p{font-size:13px;color:var(--muted);line-height:1.8;max-width:620px}
+    .vtl-src{
+      display:inline-block;margin-top:7px;
+      font-size:11px;color:var(--faint);
+      padding:2px 9px;border-radius:5px;
+      background:var(--bg2);border:1px solid var(--border2);
+    }
+    .vtl-todo{
+      border:1px dashed var(--border);border-radius:10px;
+      padding:14px 18px;margin-top:6px;max-width:620px;
+      font-size:12px;color:var(--muted);line-height:1.9;
+      background:var(--gold-dim);
+    }
+    .vtl-todo strong{color:var(--gold-lt);font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+
     /* ── Responsive ── */
     @media(max-width:768px){
       nav{padding:14px 18px}
       .nav-tabs li{padding:6px 12px;font-size:12px}
       .hero-body{grid-template-columns:1fr;gap:40px;padding:120px 20px 60px;min-height:auto}
       .wrap,.full-wrap,.tl-hdr,.tl-rail-outer,.certs-row,
-      .work-pg,.learn-pg,.create-pg{padding-left:20px;padding-right:20px}
+      .work-pg,.learn-pg,.create-pg,.chron-pg{padding-left:20px;padding-right:20px}
       .mentor-grid,.reading-grid,.proj-grid{grid-template-columns:1fr}
       .skills-grid,.certs-grid{grid-template-columns:1fr 1fr}
       .listen-grid{grid-template-columns:1fr}
@@ -493,9 +550,10 @@
   <ul class="nav-tabs" id="tabs">
     <li class="active" onclick="go(0)">介绍</li>
     <li onclick="go(1)">经历</li>
-    <li onclick="go(2)">作品</li>
-    <li onclick="go(3)">学习</li>
-    <li onclick="go(4)">创作</li>
+    <li onclick="go(2)">足迹</li>
+    <li onclick="go(3)">作品</li>
+    <li onclick="go(4)">学习</li>
+    <li onclick="go(5)">创作</li>
   </ul>
   <div class="nav-right">
     <a href="https://my.feishu.cn/docx/RbR0d6ZhBon65qxcXxecrLlhnuf" target="_blank">个人说明书 ↗</a>
@@ -538,7 +596,7 @@
           <div class="stat-label">词 SFT 数据集</div>
         </div>
         <div class="stat-cell">
-          <div class="stat-num">61 篇</div>
+          <div class="stat-num">65 篇</div>
           <div class="stat-label">周反馈连续记录</div>
         </div>
       </div>
@@ -720,6 +778,244 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     P6 · 足迹（大学编年线）
+════════════════════════ -->
+<div class="page" id="p6">
+  <div class="chron-pg">
+    <div class="eyebrow">Chronicle</div>
+    <h2 class="sh">大学足迹</h2>
+    <p class="chron-intro">
+      这条时间线不是简历——它还原的是大学真实走过的路：试错、链接、转向、做成。
+      所有事件都有出处，来自我从入学第一周起从未中断的两套自我记录系统。
+    </p>
+    <div class="chron-src-row">
+      <span class="chron-src"><strong>65 篇</strong> 周反馈（2024.09 起每周一篇）</span>
+      <span class="chron-src"><strong>3 张</strong> Kiss 复盘表（KEEP / IMPROVE / STOP / START，按天记录）</span>
+      <span class="chron-src"><strong>22 个月</strong> 连续记录，仍在继续</span>
+    </div>
+
+    <!-- 第一章 -->
+    <div class="chapter">
+      <div class="chapter-hd">
+        <div class="chapter-period">第一章 · 大一上 · 2024.09 – 2025.01</div>
+        <h3>野蛮链接，找到节奏</h3>
+        <div class="chapter-sub">入学第一学期的主旋律是「链接一切」：人、信息、机会。粗糙，但跑得飞快。</div>
+      </div>
+      <div class="vtl">
+        <div class="vtl-item">
+          <div class="vtl-date">2024.09</div>
+          <h4>入学重庆大学 · 工业工程</h4>
+          <p>军训、抢课、学生会与校团委面试。入学第一个月就在比亚迪校招上向 HR 自荐——被拒绝了，但开始了。</p>
+          <span class="vtl-src">源：Kiss24 · 9月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2024.09</div>
+          <h4>公众号「沐之悟」起步</h4>
+          <p>为了把公众号弄出来熬到凌晨 4 点。同学期完成第一次知识变现：一天卖出近 60 份课程。</p>
+          <span class="vtl-src">源：周反馈 · 大一上学期总结 / Kiss24 · 10月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2024.10</div>
+          <h4>峨眉山徒步</h4>
+          <p>国庆独自出行，来回 15 公里、6 万多步，腿软。旅途中还招募到一个新队友。</p>
+          <span class="vtl-src">源：周反馈 · 大一上第5周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2024.10 – 12</div>
+          <h4>链接狂热期 + 组队打三创赛</h4>
+          <p>好友列表加到近 1000 人，约学长、见教授、线下奔现「地瓜」。组建自己的队伍打电商三创赛，后获校赛二等奖。</p>
+          <span class="vtl-src">源：Kiss24 · 10–12月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2024.12</div>
+          <h4>第一次被 AI 编程工具震撼</h4>
+          <p>用 Cursor 赶三创赛材料，当天记录只有三个字的评价：「cursor 牛逼」。这颗种子一年半后长成了主力工作流。</p>
+          <span class="vtl-src">源：Kiss24 · 12月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.01</div>
+          <h4>学期收官</h4>
+          <p>学期总结：读书近 40 本、英语可日常交流、「感觉挖出了大学四年的资源」。列出 35 天寒假待办清单，第一次尝试 DDL 倒逼法。</p>
+          <span class="vtl-src">源：周反馈 · 大一上第18~19周</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二章 -->
+    <div class="chapter">
+      <div class="chapter-hd">
+        <div class="chapter-period">第二章 · 大一下 · 2025.02 – 2025.08</div>
+        <h3>从链接到做事</h3>
+        <div class="chapter-sub">加人不再是目的。这学期开始把精力换成项目、奖项和第一次真实的社会碰撞。</div>
+      </div>
+      <div class="vtl">
+        <div class="vtl-item">
+          <div class="vtl-date">2025.03</div>
+          <h4>开始基金定投</h4>
+          <p>从每月 400 元起步，逐月递增，一直持续到今天。财务自律的起点。</p>
+          <span class="vtl-src">源：Kiss25 · 1–6月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.04</div>
+          <h4>挑战杯校赛优胜奖</h4>
+          <p>带队参赛。当天的记录带着不甘：「可惜，挑战杯才是优胜奖」。</p>
+          <span class="vtl-src">源：Kiss25 · 4月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.04</div>
+          <h4>加入 AI 单词「巧记」项目</h4>
+          <p>自荐进入学长的创业项目，任数据负责人，主导 8 人团队完成 3500+ 词结构化标注。</p>
+          <span class="vtl-src">源：作品集 / 周反馈 · 大二上第6~7周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.05</div>
+          <h4>第一次真实的自动化交付</h4>
+          <p>用向日葵远程 + 影刀 RPA 帮学长跑批数据，被「运行 1 小时就歇菜」的脚本折磨——第一次体会交付和学习的区别。</p>
+          <span class="vtl-src">源：Kiss25 · 5月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.06</div>
+          <h4>给奶奶讲了 50 分钟毛选</h4>
+          <p>期末苦战间隙做的一件小事，后来被反复想起。</p>
+          <span class="vtl-src">源：Kiss25 · 6月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.06 – 07</div>
+          <h4>第一次实习季</h4>
+          <p>每天半小时投简历，换来 6 家面试，跑遍渝中区（单日 27000 步）。7 月一份短工被辞退——社会给的第一课。</p>
+          <span class="vtl-src">源：周反馈 · 大一下第17周 / Kiss25 · 7月</span>
+        </div>
+        <div class="vtl-item dim">
+          <div class="vtl-date">2025.08</div>
+          <h4>暑假充电</h4>
+          <p>写公众号、上英语课、陪家人。开学前的最后一段松弛。</p>
+          <span class="vtl-src">源：Kiss25 · 8月</span>
+        </div>
+        <div class="vtl-item dim">
+          <div class="vtl-todo">
+            <strong>待补充</strong>
+            AI 旅游小程序、互联网+ / 数学建模比赛、离子凝胶传感器等课程项目的具体时间，待校正后补入本章或后续章节。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第三章 -->
+    <div class="chapter">
+      <div class="chapter-hd">
+        <div class="chapter-period">第三章 · 大二上 · 2025.09 – 2026.01</div>
+        <h3>确立 PM 方向</h3>
+        <div class="chapter-sub">从「什么都试」收敛到产品经理这条主线：学方法、做项目、办活动、发播客。</div>
+      </div>
+      <div class="vtl">
+        <div class="vtl-item">
+          <div class="vtl-date">2025.09</div>
+          <h4>系统学习 PM</h4>
+          <p>需求拆解、PRD 写作开始进入每周记录。方向第一次清晰：产品经理。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第2~3周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.09</div>
+          <h4>就业中心助理管培生</h4>
+          <p>从一次「助管尝试」做到常驻值班，支持双选会（1000+ 企业、2 万+ 毕业生），用 Python 脚本把台账人工录入减少 60%。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第3、11周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.10</div>
+          <h4>黑客松联创 + 开始冥想</h4>
+          <p>成为校园黑客松联合创始人；同月在 Kiss 表里写下「第一天开始冥想」。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第6~7周 / Kiss25 · 10月</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.10 – 2026.01</div>
+          <h4>播客「自变量」完整一轮</h4>
+          <p>立项 → 11 月底发布 → 12 月第一次采访嘉宾 → 1 月理性结案。复盘沉淀出一条贵的经验：朋友和合伙人不是一回事。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第6~18周（贯穿）</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.11</div>
+          <h4>AI 单词项目升任 PM</h4>
+          <p>从数据负责人升任产品经理，输出 PRD v2.0：NFC 实体卡 + 5 袋分档 + 小程序间隔复习体系。</p>
+          <span class="vtl-src">源：作品集 / 周反馈 · 大二上</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.12</div>
+          <h4>华为奖学金答辩会 · 负责人</h4>
+          <p>当周标题原文：「原本以为是匆匆忙忙游刃有余，没想到是匆匆忙忙连滚带爬的项目」。办成了。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第13周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2025.12</div>
+          <h4>毕业生去向系统启动 + 3L 模型成文</h4>
+          <p>周反馈里轻描淡写的「做了个新项目」，是后来最重要的独立产品的起点。同月学 GitHub、写出 3L 分析框架。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第15~16周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2026.01</div>
+          <h4>机器学习课程 · 本科生助教</h4>
+          <p>结课季拿到本科生助教身份，同期完成播客项目复盘。</p>
+          <span class="vtl-src">源：周反馈 · 大二上第17周</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第四章 -->
+    <div class="chapter">
+      <div class="chapter-hd">
+        <div class="chapter-period">第四章 · 大二下 · 2026.02 – 至今</div>
+        <h3>实战与出发</h3>
+        <div class="chapter-sub">产品上线、第一份正式实习、大厂面试、独立游戏——所有积累开始变现为真实战场。</div>
+      </div>
+      <div class="vtl">
+        <div class="vtl-item">
+          <div class="vtl-date">2026.02</div>
+          <h4>腾讯未来 PM 创造营</h4>
+          <p>1 月第一次申请被拒（Kiss 表里记着那晚的生气），2 月入营进阶实战方向，结营拿证。</p>
+          <span class="vtl-src">源：Kiss2026 · 1–2月 / 周反馈 · 大二上第20周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2026.03</div>
+          <h4>投递季开启 + 去向系统收尾</h4>
+          <p>简历多版本迭代、批量投递；毕业生去向分析系统数据工程阶段完成。</p>
+          <span class="vtl-src">源：周反馈 · 大二下第1~4周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2026.04</div>
+          <h4>毕业生去向系统上线</h4>
+          <p>Web + 飞书双版本，3 次线下宣讲，首月 203 UV、复访 14.4%。从发现问题到上线推广，全程独立。</p>
+          <span class="vtl-src">源：作品集 / 周反馈 · 大二下第5周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2026.04</div>
+          <h4>用上 Claude Code</h4>
+          <p>当天 MOOD 原文：「也是用上 CC 了，爽得失眠」。开发方式从此换代，西行游戏同月启动。</p>
+          <span class="vtl-src">源：Kiss2026 · 4月 / 周反馈 · 大二下第7、9周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2026.05</div>
+          <h4>第一份正式实习 + 字节二面</h4>
+          <p>入职沐晨 AI，主导数据集平台 0→1；同月字节跳动约面并进入二面；西行游戏 MVP 与个人 RAG 知识库先后跑通。</p>
+          <span class="vtl-src">源：周反馈 · 大二下第10~12周</span>
+        </div>
+        <div class="vtl-item">
+          <div class="vtl-date">2026.06</div>
+          <h4>主动提离职 + duri-game 启动</h4>
+          <p>第一段实习以主动离职收束，把经验带走；基于西行框架启动 10+ 人团队游戏项目，新一轮投递同步进行。时间线仍在书写。</p>
+          <span class="vtl-src">源：周反馈 · 大二下第14~15周</span>
+        </div>
+        <div class="vtl-item dim">
+          <div class="vtl-todo">
+            <strong>待补充</strong>
+            明月科创 MINI CAMP 时间、2025 暑期经历细节、播客各期目录、各课程项目（电子宠物机器狗等）归属学期。
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1058,10 +1354,10 @@
             它是我对"长期主义"最实际的践行。
           </p>
           <div class="weekly-stat-row">
-            <div class="wstat"><div class="n">61</div><div class="l">总篇数</div></div>
+            <div class="wstat"><div class="n">65</div><div class="l">总篇数</div></div>
             <div class="wstat"><div class="n">18</div><div class="l">大一上</div></div>
             <div class="wstat"><div class="n">13</div><div class="l">大一下</div></div>
-            <div class="wstat"><div class="n">30</div><div class="l">大二</div></div>
+            <div class="wstat"><div class="n">34</div><div class="l">大二</div></div>
           </div>
           <div class="weekly-preview">
             <strong>最近一篇节选：</strong><br>
@@ -1129,7 +1425,7 @@
 </div><!-- #app -->
 
 <script>
-  const pages = ['p1','p2','p3','p4','p5'];
+  const pages = ['p1','p2','p6','p3','p4','p5'];
   const tabs = document.querySelectorAll('#tabs li');
   let cur = 0;
 
