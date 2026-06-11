@@ -176,57 +176,201 @@
        PAGE 2 · 经历 (Horizontal timeline)
     ════════════════════════════════════ */
     #p2{background:var(--bg)}
-    .tl-pg{padding:120px 0 80px}
-    .tl-hdr{padding:0 40px 52px;max-width:960px;margin:0 auto}
-    .tl-rail-outer{
-      overflow-x:auto;overflow-y:visible;
-      padding:0 40px 40px;
+    .hx-pg{height:100vh;min-height:600px;display:flex;flex-direction:column;padding-top:88px;box-sizing:border-box}
+    .hx-hdr{width:100%;max-width:1280px;margin:0 auto;padding:0 44px}
+    .hx-hdr .sh2{font-size:clamp(24px,3vw,32px);font-weight:700;letter-spacing:-.02em;margin:4px 0 8px}
+    .hx-intro{font-size:13px;color:var(--muted);line-height:1.8;max-width:760px;margin-bottom:10px}
+    .hx-meta-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+    .chron-src{
+      font-size:11.5px;color:var(--muted);
+      padding:5px 12px;border-radius:8px;
+      background:var(--bg2);border:1px solid var(--border2);
+    }
+    .chron-src strong{color:var(--gold-lt);font-weight:700}
+
+    /* —— 轨道筛选 —— */
+    .ft-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 10px}
+    .ft-bar-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-right:2px}
+    .ft-chip{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:5px 12px;border-radius:100px;font-size:12px;
+      color:var(--muted);background:var(--bg2);border:1px solid var(--border2);
+      cursor:pointer;user-select:none;
+      transition:color .2s,border-color .2s,background .2s;
+    }
+    .ft-chip:hover{color:var(--text);border-color:var(--border)}
+    .ft-chip.on{color:var(--text);background:var(--bg3);border-color:var(--border)}
+    .ft-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--tc,var(--muted));transition:background .25s}
+    .ft-chip.mute .dot{background:var(--faint)}
+    .ft-chip .n{font-size:10px;color:var(--faint)}
+
+    /* —— 横向画布 —— */
+    .hx-scroll{
+      flex:1;min-height:380px;position:relative;
+      overflow-x:auto;overflow-y:auto;
+      padding:0 44px 12px;
       scrollbar-width:thin;scrollbar-color:var(--border) transparent;
     }
-    .tl-rail-outer::-webkit-scrollbar{height:3px}
-    .tl-rail-outer::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-    .tl-rail{
-      display:flex;align-items:flex-start;
-      width:max-content;padding-top:52px;position:relative;
+    .hx-scroll::-webkit-scrollbar{height:4px}
+    .hx-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .hx-canvas{position:relative;height:100%;min-height:360px;user-select:none}
+    .hx-zone{position:absolute;top:0;bottom:0;background:rgba(164,129,17,.035);border-radius:8px;pointer-events:none}
+    .hx-ch{position:absolute;top:2px;z-index:2;overflow:hidden;transition:opacity .35s;pointer-events:none}
+    .hx-ch .pd{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;white-space:nowrap}
+    .hx-ch h3{font-size:15px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+    .hx-ch .sb{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hx-ch.interlude{top:40px}
+    .hx-ch.interlude .il{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hx-rl{position:absolute;left:0;right:0;top:96px;height:1px;
+      background:linear-gradient(90deg,transparent,var(--border) 2%,var(--border) 98%,transparent);transition:opacity .35s}
+    .hx-tick{position:absolute;top:88px;width:1px;height:8px;background:var(--border2);transition:opacity .35s}
+    .hx-tick.major{top:84px;height:12px;background:var(--border)}
+    .hx-tick-lb{position:absolute;top:64px;transform:translateX(-50%);font-size:9.5px;letter-spacing:.04em;color:var(--faint);white-space:nowrap;transition:opacity .35s}
+    .hx-ms{position:absolute;top:96px;width:9px;height:9px;background:var(--gold-lt);
+      transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 0 8px var(--gold-glow);z-index:3;transition:opacity .35s}
+    .hx-col{position:absolute;top:112px;display:flex;flex-direction:column;gap:6px}
+    .hx-col:not(.in)>*{opacity:0}
+    .hx-col.in>*{animation:hxIn .5s cubic-bezier(.16,1,.3,1) backwards;animation-delay:calc(var(--i)*45ms)}
+    @keyframes hxIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .hx-strip{
+      display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:8px;
+      background:var(--bg2);border:1px solid var(--border2);cursor:pointer;
+      transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .2s,opacity .3s,filter .3s,background .2s;
     }
-    .tl-rail::before{
-      content:'';position:absolute;top:21px;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent 0%,var(--border) 3%,var(--border) 97%,transparent 100%);
+    .hx-strip .dt{width:6px;height:6px;border-radius:50%;flex:none;background:var(--tc)}
+    .hx-strip .tt{font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hx-strip .rg{font-size:9px;color:var(--faint);flex:none;margin-left:auto}
+    .hx-strip:hover{transform:translateY(-1px);border-color:var(--border)}
+    .hx-strip.dim{opacity:.68;background:transparent}
+    .hx-mile{
+      padding:11px 12px;border-radius:10px;cursor:pointer;
+      background:var(--bg3);border:1px solid var(--border);
+      transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .2s,opacity .3s,filter .3s;
     }
-    .tl-node{
-      display:flex;flex-direction:column;align-items:flex-start;
-      width:268px;min-width:268px;padding:0 18px;position:relative;
+    .hx-mile:hover{transform:translateY(-1px);border-color:var(--gold)}
+    .hx-mile .md{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--gold-lt);margin-bottom:3px}
+    .hx-mile h4{font-size:13px;font-weight:700;line-height:1.5;margin-bottom:2px}
+    .hx-mile .ev-role{margin-bottom:6px}
+    .hx-mile .metrics{margin-top:0;gap:4px}
+    .hx-mile .m-chip{font-size:10px;padding:2px 7px}
+    .ev-role{font-size:10.5px;color:var(--gold);letter-spacing:.02em}
+    .hx-strip.fh,.hx-mile.fh{display:none}
+    .hx-todo{
+      position:absolute;border:1px dashed var(--border);border-radius:10px;
+      padding:12px 14px;font-size:11.5px;color:var(--muted);line-height:1.8;background:var(--gold-dim);
     }
-    .tl-node:first-child{padding-left:0}
-    .tl-date{
-      position:absolute;top:-46px;left:18px;
-      font-size:11px;font-weight:600;letter-spacing:.05em;
-      color:var(--gold);white-space:nowrap;
+    .hx-todo strong{color:var(--gold-lt);font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
+    .hx-canvas.filtered .hx-todo{display:none}
+
+    /* —— 聚焦：竖向括线 + 详情卡 —— */
+    .hx-canvas.focusing .hx-strip:not(.focused),.hx-canvas.focusing .hx-mile:not(.focused){opacity:.22;filter:saturate(.5)}
+    .hx-canvas.focusing .hx-ch,.hx-canvas.focusing .hx-ms{opacity:.25}
+    .hx-strip.focused,.hx-mile.focused{border-color:var(--gold);background:var(--bg3)}
+    .hx-br{
+      position:absolute;top:96px;bottom:6px;width:2px;border-radius:1px;
+      background:var(--gold-lt);box-shadow:0 0 8px var(--gold-glow);
+      opacity:0;transform:scaleY(0);transform-origin:top center;
+      transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .3s;
+      z-index:4;pointer-events:none;
     }
-    .tl-node:first-child .tl-date{left:0}
-    .tl-marker{
-      position:absolute;top:-42px;left:18px;
-      width:14px;height:14px;border-radius:50%;
-      background:var(--bg);border:2px solid var(--faint);
-      display:flex;align-items:center;justify-content:center;
+    .hx-br.show{opacity:1;transform:scaleY(1)}
+    .hx-br .bl{position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+      font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--gold-lt);white-space:nowrap}
+    .hx-bandx{position:absolute;top:96px;bottom:6px;border-radius:4px;
+      background:linear-gradient(90deg,var(--gold-dim),rgba(164,129,17,.04));
+      opacity:0;transition:opacity .35s;z-index:1;pointer-events:none}
+    .hx-bandx.lite{background:rgba(164,129,17,.07)}
+    .hx-bandx.show{opacity:1}
+    .hx-detail{
+      position:absolute;width:440px;max-width:78vw;max-height:calc(100% - 126px);
+      overflow-y:auto;z-index:20;
+      background:var(--bg3);border:1px solid var(--gold);border-radius:12px;
+      padding:18px 20px 16px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 24px var(--gold-dim);
+      opacity:0;pointer-events:none;transform:translateY(10px);
+      transition:opacity .3s,transform .4s cubic-bezier(.16,1,.3,1);
+      scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+      user-select:text;
     }
-    .tl-node:first-child .tl-marker{left:0}
-    .tl-marker.gold{border-color:var(--gold);background:var(--gold-dim);box-shadow:0 0 10px var(--gold-dim)}
-    .tl-marker.gold::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
-    .tl-marker.green{border-color:var(--green);background:var(--green-dim)}
-    .tl-marker.green::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--green)}
-    .tl-marker.dim::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--faint)}
-    .tl-card{
+    .hx-detail.show{opacity:1;pointer-events:auto;transform:none}
+    .hx-detail h4{font-size:15px;font-weight:700;margin-bottom:4px}
+    .hx-detail .ev-role{display:block;font-size:11px;margin-bottom:6px}
+    .hx-detail .metrics{margin:0 0 8px}
+    .hx-detail p{font-size:12.5px;color:var(--muted);line-height:1.8;margin-bottom:4px}
+    .hx-x{position:absolute;top:8px;right:12px;font-size:16px;color:var(--faint);cursor:pointer;line-height:1}
+    .hx-x:hover{color:var(--text)}
+    .hx-pop{
+      position:fixed;z-index:300;width:300px;
+      background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+      padding:12px 14px;pointer-events:none;
+      opacity:0;transform:translateY(4px);transition:opacity .18s,transform .22s;
+      box-shadow:0 14px 40px rgba(0,0,0,.5);
+    }
+    .hx-pop.show{opacity:1;transform:none}
+    .hx-pop .d{font-size:10px;font-weight:700;color:var(--gold);margin-bottom:3px}
+    .hx-pop h5{font-size:13px;font-weight:600;line-height:1.5;margin-bottom:4px}
+    .hx-pop p{font-size:11.5px;color:var(--muted);line-height:1.7;
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .hx-pop .hint{font-size:10px;color:var(--faint);margin-top:6px}
+
+    /* —— 通用事件元素（详情卡 / 移动端共用） —— */
+    .ft-meta{display:flex;align-items:center;gap:12px;margin-bottom:5px}
+    .ft-date{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gold)}
+    .ft-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.08em;color:var(--muted)}
+    .ft-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--tc)}
+    .ft-src{
+      display:inline-block;margin-top:8px;
+      font-size:11px;color:var(--faint);
+      padding:2px 9px;border-radius:5px;
+      background:var(--bg);border:1px solid var(--border2);
+    }
+    .ft-spanbar{display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:11px;border-top:1px solid var(--border2)}
+    .ft-spanbar .d{font-size:11px;font-weight:700;color:var(--gold-lt);white-space:nowrap}
+    .ft-spanbar .ln{position:relative;flex:1;height:2px;border-radius:1px;background:linear-gradient(90deg,var(--gold),var(--gold-lt))}
+    .ft-spanbar .ln::before,.ft-spanbar .ln::after{content:'';position:absolute;top:50%;width:2px;height:10px;border-radius:1px;background:var(--gold-lt);transform:translateY(-50%)}
+    .ft-spanbar .ln::before{left:0}
+    .ft-spanbar .ln::after{right:0}
+    .ft-spanbar.point .ln{background:var(--border2)}
+    .ft-spanbar.point .ln::after{display:none}
+    .ft-spanbar.point .ln::before{left:50%}
+    .ft-spanbar .dur{font-size:10px;color:var(--muted);white-space:nowrap}
+    .ft-todo{
+      border:1px dashed var(--border);border-radius:10px;
+      padding:14px 18px;margin-top:10px;
+      font-size:12px;color:var(--muted);line-height:1.9;background:var(--gold-dim);
+    }
+    .ft-todo strong{color:var(--gold-lt);font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+    .ft-fallback{border:1px dashed var(--border);border-radius:10px;padding:18px 20px;font-size:13px;color:var(--muted);line-height:2;max-width:640px}
+    .ft-fallback code{color:var(--gold-lt);font-size:12px}
+
+    /* —— 移动端竖版回退 —— */
+    .mb-stream{display:none;max-width:720px;margin:0 auto;padding:0 20px 40px}
+    .mb-group{margin:34px 0}
+    .mb-group.fh{display:none}
+    .mb-hd .pd{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+    .mb-hd h3{font-size:20px;font-weight:700;letter-spacing:-.02em}
+    .mb-hd .sb{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.8}
+    .mb-group.interlude .mb-hd h3{font-size:15px;color:var(--muted)}
+    .mb-group.interlude .mb-hd .pd{color:var(--faint)}
+    .mb-card{
       background:var(--bg2);border:1px solid var(--border2);
-      border-radius:11px;padding:18px;margin-top:10px;width:100%;
-      transition:border-color .2s,transform .2s;
+      border-radius:11px;padding:14px 16px;margin-top:10px;
     }
-    .tl-card:hover{border-color:var(--border);transform:translateY(-2px)}
-    .tl-card-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
-    .tl-card-tag.g{color:var(--green)}
-    .tl-card h3{font-size:14px;font-weight:600;margin-bottom:3px}
-    .tl-card .role{font-size:11px;color:var(--muted);margin-bottom:8px}
-    .tl-card p{font-size:12px;color:var(--muted);line-height:1.8}
+    .mb-card.mile{background:var(--bg3);border-color:var(--border)}
+    .mb-card h4{font-size:14px;font-weight:600;margin-bottom:3px}
+    .mb-card .ev-role{display:block;margin-bottom:5px}
+    .mb-card .metrics{margin:0 0 6px}
+    .mb-card p{font-size:12.5px;color:var(--muted);line-height:1.8}
+    .mb-card.dim{background:transparent;opacity:.82}
+    .mb-card.fh{display:none}
+    .ft-spanwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1)}
+    .mb-card.open .ft-spanwrap{grid-template-rows:1fr}
+    .ft-spaninner{overflow:hidden}
+    .mb-stream.filtered .ft-todo{display:none}
+    @media (prefers-reduced-motion:reduce){
+      .hx-col:not(.in)>*{opacity:1}
+      .hx-col.in>*{animation:none}
+      .hx-br,.hx-detail,.ft-spanwrap,.hx-strip,.hx-mile{transition:none!important}
+    }
     .certs-row{
       max-width:960px;margin:0 auto;padding:40px 40px 0;
       border-top:1px solid var(--border2);
@@ -466,158 +610,13 @@
     }
     .contact-item:hover{border-color:var(--border);color:var(--text)}
 
-    /* ════════════════════════════════════
-       PAGE 6 · 足迹（大学编年线）
-    ════════════════════════════════════ */
-    #p6{background:var(--bg)}
-    .chron-pg{max-width:1100px;margin:0 auto;padding:140px 40px 80px}
-    .chron-intro{
-      font-size:14px;color:var(--muted);line-height:1.9;
-      max-width:640px;margin-bottom:18px;
-    }
-    .chron-src-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
-    .chron-src{
-      font-size:12px;color:var(--muted);
-      padding:6px 14px;border-radius:8px;
-      background:var(--bg2);border:1px solid var(--border2);
-    }
-    .chron-src strong{color:var(--gold-lt);font-weight:700}
-
-    /* —— 轨道筛选栏 —— */
-    .ft-bar{
-      position:sticky;top:56px;z-index:60;
-      display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-      padding:12px 0 14px;margin-bottom:8px;
-      background:linear-gradient(to bottom,var(--bg) 72%,transparent);
-    }
-    .ft-bar-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-right:2px}
-    .ft-chip{
-      display:inline-flex;align-items:center;gap:7px;
-      padding:6px 13px;border-radius:100px;font-size:12px;
-      color:var(--muted);background:var(--bg2);border:1px solid var(--border2);
-      cursor:pointer;user-select:none;
-      transition:color .2s,border-color .2s,background .2s;
-    }
-    .ft-chip:hover{color:var(--text);border-color:var(--border)}
-    .ft-chip.on{color:var(--text);background:var(--bg3);border-color:var(--border)}
-    .ft-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--tc,var(--muted));transition:background .25s}
-    .ft-chip.mute .dot{background:var(--faint)}
-    .ft-chip .n{font-size:10px;color:var(--faint)}
-
-    /* —— 主网格：左轴 + 右卡片流 —— */
-    .ft-grid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:44px;align-items:start}
-    .ft-axis-wrap{position:sticky;top:118px;height:calc(100vh - 178px);min-height:430px}
-    .ft-axis{position:relative;height:100%;transition:transform .45s cubic-bezier(.16,1,.3,1)}
-    .ft-axis.focusing{transform:scale(.94);transform-origin:left center}
-    .ax-line{position:absolute;left:104px;top:0;bottom:0;width:1px;
-      background:linear-gradient(to bottom,transparent,var(--border) 4%,var(--border) 96%,transparent)}
-    .ax-tick{position:absolute;left:97px;width:7px;height:1px;background:var(--border2);transition:opacity .35s}
-    .ax-tick.major{left:91px;width:13px;background:var(--border)}
-    .ax-tick-lb{position:absolute;right:96px;transform:translateY(-50%);font-size:9.5px;letter-spacing:.04em;color:var(--faint);white-space:nowrap;transition:opacity .35s}
-    .ax-band{position:absolute;left:112px;width:5px;border-radius:3px;background:var(--gold-dim);cursor:pointer;transition:background .25s,opacity .35s}
-    .ax-band.interlude{background:rgba(255,255,255,.05)}
-    .ax-band:hover{background:var(--gold-glow)}
-    .ax-band-lb{position:absolute;left:124px;writing-mode:vertical-rl;font-size:9.5px;letter-spacing:.16em;color:var(--faint);cursor:pointer;user-select:none;transition:color .25s,opacity .35s}
-    .ax-band-lb:hover,.ax-band-lb.cur{color:var(--gold-lt)}
-    .ax-dot{position:absolute;width:5px;height:5px;border-radius:50%;transform:translate(-50%,-50%);opacity:.85;transition:opacity .3s}
-    .ax-dot.off{opacity:.1}
-    .ax-now{position:absolute;left:104px;width:11px;height:11px;border-radius:50%;
-      background:var(--gold-lt);box-shadow:0 0 10px var(--gold-glow),0 0 0 3px var(--gold-dim);
-      transform:translate(-50%,-50%);transition:top .3s cubic-bezier(.16,1,.3,1),opacity .35s}
-    .ft-axis.focusing .ax-tick,.ft-axis.focusing .ax-tick-lb,.ft-axis.focusing .ax-band,
-    .ft-axis.focusing .ax-band-lb,.ft-axis.focusing .ax-dot,.ft-axis.focusing .ax-now{opacity:.12}
-    .ax-hband{position:absolute;left:58px;width:60px;background:rgba(164,129,17,.10);border-radius:2px;opacity:0;transition:opacity .2s;pointer-events:none}
-    .ax-hband.show{opacity:1}
-    .ax-fband{position:absolute;left:58px;width:60px;border-radius:2px;
-      background:linear-gradient(to bottom,var(--gold-dim),rgba(164,129,17,.05));
-      opacity:0;transition:opacity .35s;pointer-events:none}
-    .ax-fband.show{opacity:1}
-    .ax-bracket{position:absolute;left:58px;width:60px;height:2px;border-radius:1px;
-      background:var(--gold-lt);box-shadow:0 0 8px var(--gold-glow);
-      transform:scaleX(0);transform-origin:left center;opacity:0;
-      transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .3s,top .3s;pointer-events:none}
-    .ax-bracket.show{transform:scaleX(1);opacity:1}
-    .ax-bracket .bl{position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);
-      font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--gold-lt);white-space:nowrap}
-
-    /* —— 卡片流 —— */
-    .ft-stream{position:relative;min-width:0}
-    .ft-group{margin-bottom:52px;scroll-margin-top:132px}
-    .ft-group.fh{display:none}
-    .ft-chap-hd{margin-bottom:20px;transition:opacity .35s}
-    .ft-period{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-    .ft-chap-hd h3{font-size:24px;font-weight:700;letter-spacing:-.02em}
-    .ft-sub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.8;max-width:640px}
-    .ft-group.interlude .ft-chap-hd h3{font-size:17px;color:var(--muted)}
-    .ft-group.interlude .ft-period{color:var(--faint)}
-    .ft-card{
-      position:relative;background:var(--bg2);border:1px solid var(--border2);
-      border-radius:12px;padding:16px 20px 14px;margin-bottom:12px;cursor:pointer;
-      transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .25s,
-        box-shadow .35s,opacity .35s,filter .35s,background .25s;
-    }
-    .ft-card:hover{transform:translateY(-2px) scale(1.013);border-color:var(--border);box-shadow:0 10px 34px rgba(0,0,0,.38)}
-    .ft-card.pre{opacity:0;transform:translateY(16px)}
-    .ft-card.dim{background:transparent;opacity:.8}
-    .ft-card.fo{opacity:0;transform:translateY(8px) scale(.98)}
-    .ft-card.fh{display:none}
-    .ft-meta{display:flex;align-items:center;gap:12px;margin-bottom:5px}
-    .ft-date{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gold)}
-    .ft-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.08em;color:var(--muted)}
-    .ft-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--tc)}
-    .ft-card h4{font-size:15px;font-weight:600;margin-bottom:4px}
-    .ft-card p{font-size:13px;color:var(--muted);line-height:1.8;max-width:640px}
-    .ft-src{
-      display:inline-block;margin-top:8px;
-      font-size:11px;color:var(--faint);
-      padding:2px 9px;border-radius:5px;
-      background:var(--bg);border:1px solid var(--border2);
-    }
-    /* 聚焦态 */
-    .ft-stream.focusing .ft-chap-hd{opacity:.18}
-    .ft-stream.focusing .ft-card:not(.focused){opacity:.18;filter:saturate(.5)}
-    .ft-stream.focusing .ft-card:not(.focused):hover{transform:none;box-shadow:none;border-color:var(--border2)}
-    .ft-card.focused{
-      transform:scale(1.035);border-color:var(--gold);background:var(--bg3);
-      box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 24px var(--gold-dim);z-index:5;
-    }
-    .ft-card.focused:hover{transform:scale(1.035)}
-    .ft-spanwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1)}
-    .ft-card.focused .ft-spanwrap{grid-template-rows:1fr}
-    .ft-spaninner{overflow:hidden}
-    .ft-spanbar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border2)}
-    .ft-spanbar .d{font-size:11px;font-weight:700;color:var(--gold-lt);white-space:nowrap}
-    .ft-spanbar .ln{position:relative;flex:1;height:2px;border-radius:1px;background:linear-gradient(90deg,var(--gold),var(--gold-lt))}
-    .ft-spanbar .ln::before,.ft-spanbar .ln::after{content:'';position:absolute;top:50%;width:2px;height:10px;border-radius:1px;background:var(--gold-lt);transform:translateY(-50%)}
-    .ft-spanbar .ln::before{left:0}
-    .ft-spanbar .ln::after{right:0}
-    .ft-spanbar.point .ln{background:var(--border2)}
-    .ft-spanbar.point .ln::after{display:none}
-    .ft-spanbar.point .ln::before{left:50%}
-    .ft-spanbar .dur{font-size:10px;color:var(--muted);white-space:nowrap}
-    /* 待补充 / 加载失败 */
-    .ft-todo{
-      border:1px dashed var(--border);border-radius:10px;
-      padding:14px 18px;margin-top:6px;max-width:640px;
-      font-size:12px;color:var(--muted);line-height:1.9;
-      background:var(--gold-dim);
-    }
-    .ft-todo strong{color:var(--gold-lt);font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
-    .ft-stream.filtered .ft-todo{display:none}
-    .ft-fallback{border:1px dashed var(--border);border-radius:10px;padding:18px 20px;font-size:13px;color:var(--muted);line-height:2}
-    .ft-fallback code{color:var(--gold-lt);font-size:12px}
-    @media (prefers-reduced-motion:reduce){
-      .ft-card,.ft-axis,.ax-bracket,.ax-now,.ft-spanwrap{transition:none!important}
-      .ft-card.pre{opacity:1;transform:none}
-    }
-
     /* ── Responsive ── */
     @media(max-width:768px){
       nav{padding:14px 18px}
       .nav-tabs li{padding:6px 12px;font-size:12px}
       .hero-body{grid-template-columns:1fr;gap:40px;padding:120px 20px 60px;min-height:auto}
-      .wrap,.full-wrap,.tl-hdr,.tl-rail-outer,.certs-row,
-      .work-pg,.learn-pg,.create-pg,.chron-pg{padding-left:20px;padding-right:20px}
+      .wrap,.full-wrap,.certs-row,
+      .work-pg,.learn-pg,.create-pg,.hx-hdr{padding-left:20px;padding-right:20px}
       .mentor-grid,.reading-grid,.proj-grid{grid-template-columns:1fr}
       .skills-grid,.certs-grid{grid-template-columns:1fr 1fr}
       .listen-grid{grid-template-columns:1fr}
@@ -626,10 +625,9 @@
       .values-grid{grid-template-columns:1fr}
       .contact-bar{flex-direction:column;align-items:flex-start}
       .shelf-books{grid-template-columns:1fr 1fr}
-      .ft-grid{display:block}
-      .ft-axis-wrap{display:none}
-      .ft-bar{top:48px}
-      .ft-card.focused{transform:scale(1.015)}
+      .hx-pg{height:auto;min-height:0}
+      .hx-scroll{display:none}
+      .mb-stream{display:block}
     }
   </style>
 </head>
@@ -642,10 +640,9 @@
   <ul class="nav-tabs" id="tabs">
     <li class="active" onclick="go(0)">介绍</li>
     <li onclick="go(1)">经历</li>
-    <li onclick="go(2)">足迹</li>
-    <li onclick="go(3)">作品</li>
-    <li onclick="go(4)">学习</li>
-    <li onclick="go(5)">创作</li>
+    <li onclick="go(2)">作品</li>
+    <li onclick="go(3)">学习</li>
+    <li onclick="go(4)">创作</li>
   </ul>
   <div class="nav-right">
     <a href="https://my.feishu.cn/docx/RbR0d6ZhBon65qxcXxecrLlhnuf" target="_blank">个人说明书 ↗</a>
@@ -727,177 +724,44 @@
      P2 · 经历
 ════════════════════════ -->
 <div class="page" id="p2">
-  <div class="tl-pg">
-    <div class="tl-hdr">
-      <div class="eyebrow">Timeline</div>
-      <h2 class="sh">本科经历</h2>
-    </div>
-
-    <div class="tl-rail-outer">
-      <div class="tl-rail">
-
-        <div class="tl-node">
-          <div class="tl-date">2024.09</div>
-          <div class="tl-marker gold"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag">起点</div>
-            <h3>入学重庆大学</h3>
-            <div class="role">工业工程 · 机械与运载工程学院</div>
-            <p>工业工程的底子天然适合做产品——流程优化、系统思维、人机工程，后来全用上了。入学后开始试图搞清楚 AI 能干什么。</p>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2025.04</div>
-          <div class="tl-marker gold"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag">项目</div>
-            <h3>AI 单词「巧记」</h3>
-            <div class="role">数据负责人</div>
-            <p>主导 8 人团队完成 3500+ 词结构化标注，设计 13 种记忆方法分类体系，建立双层质控机制。</p>
-            <div class="metrics">
-              <span class="m-chip">8 人团队</span>
-              <span class="m-chip g">效率 ↑240%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2025.09</div>
-          <div class="tl-marker green"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag g">校内</div>
-            <h3>重庆大学就业中心</h3>
-            <div class="role">助理管培生</div>
-            <p>支持双选会运营（1000+ 企业、2 万+ 毕业生）。识别台账效率瓶颈，写 Python 脚本，人工录入减少 60%。</p>
-            <div class="metrics">
-              <span class="m-chip g">工作量减 60%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2025.11</div>
-          <div class="tl-marker gold"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag">升任</div>
-            <h3>AI 单词「巧记」</h3>
-            <div class="role">产品经理</div>
-            <p>升任 PM，主导完整产品设计——NFC 卡片 + 5 袋分档 + 小程序间隔复习体系，输出 PRD v2.0。</p>
-            <div class="metrics">
-              <span class="m-chip">PRD v2.0</span>
-              <span class="m-chip g">正确率 96%+</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2025.12</div>
-          <div class="tl-marker gold"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag">独立产品</div>
-            <h3>毕业生去向系统</h3>
-            <div class="role">产品负责人 · 从 0 到 1</div>
-            <p>自主识别信息不对称问题，独立落地。34 学院、2 万+ 条数据，12 人定性访谈，6 项关键决策。</p>
-            <div class="metrics">
-              <span class="m-chip">12 人访谈</span>
-              <span class="m-chip g">转化 43%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2026.02</div>
-          <div class="tl-marker dim"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag">训练营</div>
-            <h3>腾讯未来 PM 创造营</h3>
-            <div class="role">进阶实战方向</div>
-            <p>需求分析 → PRD → 产品迭代结构化训练，输出可部署任务管理 Web Demo，获结营证书。</p>
-            <div class="metrics">
-              <span class="m-chip">结营证书</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2026.04</div>
-          <div class="tl-marker gold"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag">产品上线</div>
-            <h3>去向系统上线</h3>
-            <div class="role">Web + 飞书双版本</div>
-            <p>3 次线下宣讲。Vercel 访问受限后快速回退飞书版，可达性优先于功能完整性。</p>
-            <div class="metrics">
-              <span class="m-chip g">203 UV</span>
-              <span class="m-chip">复访 14.4%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-node">
-          <div class="tl-date">2026.05 · 至今</div>
-          <div class="tl-marker green"></div>
-          <div class="tl-card">
-            <div class="tl-card-tag g">实习</div>
-            <h3>沐晨人工智能科技</h3>
-            <div class="role">产品经理 · 核心成员</div>
-            <p>双线并行：主导「沐小音」数据集平台 0→1 设计；独立交付 HR 合同签署全链路自动化。</p>
-            <div class="metrics">
-              <span class="m-chip g">3 处 MVP gap</span>
-              <span class="m-chip">7 个竞品调研</span>
-            </div>
-          </div>
-        </div>
-
+  <div class="hx-pg">
+    <div class="hx-hdr">
+      <div class="eyebrow">Timeline · Chronicle</div>
+      <h2 class="sh2">本科经历 · 大学足迹</h2>
+      <p class="hx-intro">
+        这条时间线不是简历——它还原大学真实走过的路：试错、链接、转向、做成。金色卡片是简历级里程碑，
+        其余每一条都有出处，来自入学第一周起从未中断的自我记录系统。悬停看摘要，点击看全文与时间跨度。
+      </p>
+      <div class="hx-meta-row">
+        <span class="chron-src"><strong>65 篇</strong> 周反馈</span>
+        <span class="chron-src"><strong>3 张</strong> Kiss 复盘表</span>
+        <span class="chron-src"><strong>「沐之悟」</strong> 公众号存档</span>
+        <span class="chron-src"><strong>22 个月</strong> 连续记录，仍在继续</span>
+      </div>
+      <div class="ft-bar" id="ftBar" hidden>
+        <span class="ft-bar-label">轨道</span>
       </div>
     </div>
-
-    <div class="certs-row">
-      <div class="eyebrow">Certificates & Awards</div>
-      <div class="certs-grid">
-        <div class="cert-card">
-          <strong>腾讯未来 PM 创造营</strong>进阶实战方向结营证书
-        </div>
-        <div class="cert-card">
-          <strong>明月科创 MINI CAMP</strong>结营证书
-        </div>
-        <div class="cert-card">
-          <strong>电商三创赛</strong>校赛二等奖
-        </div>
-        <div class="cert-card">
-          <strong>挑战杯</strong>校赛优胜奖
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════
-     P6 · 足迹（大学编年线）
-════════════════════════ -->
-<div class="page" id="p6">
-  <div class="chron-pg">
-    <div class="eyebrow">Chronicle</div>
-    <h2 class="sh">大学足迹</h2>
-    <p class="chron-intro">
-      这条时间线不是简历——它还原的是大学真实走过的路：试错、链接、转向、做成。
-      所有事件都有出处，来自我从入学第一周起从未中断的两套自我记录系统。
-    </p>
-    <div class="chron-src-row">
-      <span class="chron-src"><strong>65 篇</strong> 周反馈（2024.09 起每周一篇）</span>
-      <span class="chron-src"><strong>3 张</strong> Kiss 复盘表（KEEP / IMPROVE / STOP / START，按天记录）</span>
-      <span class="chron-src"><strong>「沐之悟」</strong> 公众号文章存档</span>
-      <span class="chron-src"><strong>22 个月</strong> 连续记录，仍在继续</span>
-    </div>
-
     <!-- 时间线数据在 footprints.md，由页面底部脚本运行时渲染 -->
-    <div class="ft-bar" id="ftBar" hidden>
-      <span class="ft-bar-label">轨道</span>
-    </div>
-    <div class="ft-grid">
-      <div class="ft-axis-wrap" id="ftAxisWrap"><div class="ft-axis" id="ftAxis"></div></div>
-      <div class="ft-stream" id="ftStream"></div>
+    <div class="hx-scroll" id="hxScroll"><div class="hx-canvas" id="hxCanvas"></div></div>
+    <div class="mb-stream" id="mbStream"></div>
+  </div>
+
+  <div class="certs-row">
+    <div class="eyebrow">Certificates &amp; Awards</div>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <strong>腾讯未来 PM 创造营</strong>进阶实战方向结营证书
+      </div>
+      <div class="cert-card">
+        <strong>明月科创 MINI CAMP</strong>结营证书
+      </div>
+      <div class="cert-card">
+        <strong>电商三创赛</strong>校赛二等奖
+      </div>
+      <div class="cert-card">
+        <strong>挑战杯</strong>校赛优胜奖
+      </div>
     </div>
   </div>
 </div>
@@ -1308,7 +1172,7 @@
 </div><!-- #app -->
 
 <script>
-  const pages = ['p1','p2','p6','p3','p4','p5'];
+  const pages = ['p1','p2','p3','p4','p5'];
   const tabs = document.querySelectorAll('#tabs li');
   let cur = 0;
 
@@ -1335,7 +1199,7 @@
 </script>
 
 <script>
-/* ── 足迹页：footprints.md 运行时渲染 + 时间轴交互 ── */
+/* ── 经历页：footprints.md 运行时渲染（横版时间线 + 移动端竖版回退） ── */
 (function(){
   const TRACKS = {
     '项目':{c:'#C9A527'},
@@ -1343,10 +1207,11 @@
     '情绪':{c:'#a78bfa'},
     '生活':{c:'#9a917c'},
   };
-  const LANE = {'项目':68,'求职':78,'情绪':88,'生活':98};
-  const p6 = document.getElementById('p6');
-  const stream = document.getElementById('ftStream');
-  const axisEl = document.getElementById('ftAxis');
+  const COLW = 232, COLTOP = 112;
+  const page = document.getElementById('p2');
+  const scroller = document.getElementById('hxScroll');
+  const canvas = document.getElementById('hxCanvas');
+  const mb = document.getElementById('mbStream');
   const bar = document.getElementById('ftBar');
   const NOW = (() => { const d = new Date(); return d.getFullYear()*12 + d.getMonth(); })();
 
@@ -1354,8 +1219,8 @@
     .then(r => { if (!r.ok) throw 0; return r.text(); })
     .then(init)
     .catch(() => {
-      document.getElementById('ftAxisWrap').style.display = 'none';
-      stream.innerHTML = '<div class="ft-fallback">足迹数据从 footprints.md 加载，直接双击打开 HTML 时浏览器会拦截本地文件读取。<br>本地预览：在项目目录运行 <code>python3 -m http.server 8923</code>，然后访问 <code>http://localhost:8923</code>。线上版本不受影响。</div>';
+      const msg = '<div class="ft-fallback" style="margin:8px 0">足迹数据从 footprints.md 加载，直接双击打开 HTML 时浏览器会拦截本地文件读取。<br>本地预览：双击项目目录里的 <code>本地预览.command</code>，或运行 <code>python3 -m http.server 8923</code> 后访问 <code>http://localhost:8923</code>。线上版本不受影响。</div>';
+      scroller.innerHTML = msg; mb.innerHTML = msg;
     });
 
   /* —— 解析 —— */
@@ -1390,7 +1255,8 @@
         const f = lt.slice(3).split('|').map(s => s.trim());
         if (f[0] === '待补充') { item = {todo:true, body:[]}; ch && ch.items.push(item); continue; }
         item = {date:f[0], range:parseRange(f[0]), track:TRACKS[f[1]] ? f[1] : '生活',
-                title:f[2] || '', dim:f.includes('dim'), body:[], src:''};
+                title:f[2] || '', dim:f.includes('dim'), mile:f.includes('里程碑'),
+                role:'', metrics:null, body:[], src:''};
         ch && ch.items.push(item);
       } else if (lt.startsWith('# ')) {
         const seg = lt.slice(2).split('·').map(s => s.trim());
@@ -1402,30 +1268,141 @@
         if (ch && !item) ch.sub += (ch.sub ? ' ' : '') + lt.replace(/^>\s*/, '');
       } else if (lt) {
         if (!item) continue;
-        if (lt.startsWith('源：')) item.src = lt; else item.body.push(lt);
+        if (lt.startsWith('源：')) item.src = lt;
+        else if (lt.startsWith('角色：')) item.role = lt.slice(3);
+        else if (lt.startsWith('指标：')) item.metrics = lt.slice(3).split('/').map(s => s.trim()).filter(Boolean);
+        else item.body.push(lt);
       }
     }
     return chapters;
   }
   function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  /* —— 渲染 —— */
   function init(md){
     const chapters = parseMD(md);
-    const cards = [], groups = [];
     let mn = Infinity, mx = -Infinity;
     chapters.forEach(c => {
       if (c.range) { mn = Math.min(mn, c.range.a); mx = Math.max(mx, c.range.b); }
       c.items.forEach(it => { if (it.range) { mn = Math.min(mn, it.range.a); mx = Math.max(mx, it.range.b); } });
     });
-    const pct = m => (m - mn) / (mx + 1 - mn) * 100;
+    const X = m => (m - mn) * COLW;
+    const cards = [];
+    const mk = (cls, parent) => { const d = document.createElement('div'); d.className = cls; (parent || canvas).appendChild(d); return d; };
 
+    function durbar(it){
+      const r = it.range || {a:mn, b:mn, open:false};
+      const n = r.b - r.a + 1;
+      const dur = r.open ? '进行中' : (n > 1 ? n + ' 个月' : '单月');
+      const inner = n > 1
+        ? '<span class="d">' + fmt(r.a) + '</span><span class="ln"></span><span class="d">' + (r.open ? '至今' : fmt(r.b)) + '</span><span class="dur">' + dur + '</span>'
+        : '<span class="d">' + fmt(r.a) + '</span><span class="ln"></span><span class="dur">' + dur + '</span>';
+      return '<div class="ft-spanbar' + (n > 1 ? '' : ' point') + '">' + inner + '</div>';
+    }
+    function metaHTML(it){
+      return '<div class="ft-meta"><span class="ft-date">' + esc(it.date) + '</span>'
+        + '<span class="ft-tag" style="--tc:' + TRACKS[it.track].c + '">' + esc(it.track) + '</span></div>';
+    }
+    function roleMetricsHTML(it){
+      return (it.role ? '<span class="ev-role">' + esc(it.role) + '</span>' : '')
+        + (it.metrics ? '<div class="metrics">' + it.metrics.map(x => '<span class="m-chip">' + esc(x) + '</span>').join('') + '</div>' : '');
+    }
+
+    /* ═══ 桌面横版画布 ═══ */
+    canvas.style.width = ((mx + 1 - mn) * COLW + 330) + 'px';
+    let semIdx = 0;
+    chapters.forEach(c => {
+      if (!c.range || c.interlude) return;
+      if (semIdx % 2 === 0) {
+        const z = mk('hx-zone');
+        z.style.left = X(c.range.a) + 'px';
+        z.style.width = (X(c.range.b + 1) - X(c.range.a)) + 'px';
+      }
+      semIdx++;
+    });
+    mk('hx-rl');
+    for (let m = mn; m <= mx + 1; m++) {
+      const major = (m % 12 === 0) || m === mn || m === mx + 1;
+      const t = mk('hx-tick' + (major ? ' major' : ''));
+      t.style.left = X(m) + 'px';
+      if (major) {
+        const lb = mk('hx-tick-lb');
+        lb.style.left = X(m) + 'px';
+        if (m === mn) lb.style.transform = 'none';
+        if (m === mx + 1) lb.style.transform = 'translateX(-100%)';
+        lb.textContent = m === mx + 1 ? '至今' : fmt(m);
+      }
+    }
+    chapters.forEach(c => {
+      if (!c.range) return;
+      const h = mk('hx-ch' + (c.interlude ? ' interlude' : ''));
+      h.style.left = (X(c.range.a) + 8) + 'px';
+      h.style.maxWidth = (X(c.range.b + 1) - X(c.range.a) - 16) + 'px';
+      h.innerHTML = c.interlude
+        ? '<div class="il">' + esc([c.kind, c.name, c.title].filter(Boolean).join(' · ')) + '</div>'
+        : '<div class="pd">' + esc([c.kind, c.name, c.period].filter(Boolean).join(' · ')) + '</div>'
+          + '<h3>' + esc(c.title) + '</h3>'
+          + (c.sub ? '<div class="sb">' + esc(c.sub) + '</div>' : '');
+    });
+    const cols = {};
+    const colOf = m => {
+      if (!cols[m]) {
+        const c = mk('hx-col');
+        c.style.left = (X(m) + 8) + 'px';
+        c.style.width = (COLW - 18) + 'px';
+        cols[m] = c;
+      }
+      return cols[m];
+    };
+    let todoData = null;
+    chapters.forEach(c => c.items.forEach(it => {
+      if (it.todo) { todoData = it; return; }
+      const a = it.range ? it.range.a : mn;
+      const col = colOf(a);
+      let el;
+      if (it.mile) {
+        el = document.createElement('div');
+        el.className = 'hx-mile';
+        el.innerHTML = '<div class="md">' + esc(it.date) + '</div><h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it);
+        const ms = mk('hx-ms');
+        ms.style.left = (X(a) + COLW / 2) + 'px';
+      } else {
+        el = document.createElement('div');
+        el.className = 'hx-strip' + (it.dim ? ' dim' : '');
+        el.innerHTML = '<span class="dt" style="--tc:' + TRACKS[it.track].c + '"></span>'
+          + '<span class="tt">' + esc(it.title) + '</span>'
+          + (it.range && it.range.b > it.range.a ? '<span class="rg">▸▸</span>' : '');
+      }
+      el.dataset.track = it.track;
+      el.style.setProperty('--i', col.children.length);
+      col.appendChild(el);
+      const o = {el, it};
+      el.__o = o;
+      cards.push(o);
+    }));
+    if (todoData) {
+      const td = mk('hx-todo');
+      td.style.left = (X(mx + 1) + 30) + 'px';
+      td.style.top = COLTOP + 'px';
+      td.style.width = '250px';
+      td.innerHTML = '<strong>待补充</strong>' + esc(todoData.body.join(' '));
+    }
+    const fband = mk('hx-bandx'), hband = mk('hx-bandx lite');
+    const brA = mk('hx-br'), brB = mk('hx-br');
+    brA.innerHTML = '<span class="bl"></span>';
+    brB.innerHTML = '<span class="bl"></span>';
+    const detail = mk('hx-detail');
+    const pop = document.createElement('div');
+    pop.className = 'hx-pop';
+    document.body.appendChild(pop);
+
+    /* ═══ 移动端竖版 ═══ */
+    const mgroups = [];
     chapters.forEach(c => {
       const g = document.createElement('div');
-      g.className = 'ft-group' + (c.interlude ? ' interlude' : '');
-      g.innerHTML = '<div class="ft-chap-hd"><div class="ft-period">'
-        + esc([c.kind, c.name, c.period].filter(Boolean).join(' · ')) + '</div><h3>'
-        + esc(c.title) + '</h3>' + (c.sub ? '<div class="ft-sub">' + esc(c.sub) + '</div>' : '') + '</div>';
+      g.className = 'mb-group' + (c.interlude ? ' interlude' : '');
+      g.innerHTML = '<div class="mb-hd"><div class="pd">' + esc([c.kind, c.name, c.period].filter(Boolean).join(' · ')) + '</div>'
+        + '<h3>' + esc(c.title) + '</h3>'
+        + (c.sub ? '<div class="sb">' + esc(c.sub) + '</div>' : '') + '</div>';
       c.items.forEach(it => {
         if (it.todo) {
           const d = document.createElement('div');
@@ -1433,166 +1410,149 @@
           d.innerHTML = '<strong>待补充</strong>' + esc(it.body.join(' '));
           g.appendChild(d); return;
         }
-        const card = document.createElement('div');
-        card.className = 'ft-card pre' + (it.dim ? ' dim' : '');
-        const r = it.range || {a:mn, b:mn, open:false};
-        const months = r.b - r.a + 1;
-        const dur = r.open ? '进行中' : (months > 1 ? months + ' 个月' : '单月');
-        const spanbar = months > 1
-          ? '<span class="d">' + fmt(r.a) + '</span><span class="ln"></span><span class="d">'
-            + (r.open ? '至今' : fmt(r.b)) + '</span><span class="dur">' + dur + '</span>'
-          : '<span class="d">' + fmt(r.a) + '</span><span class="ln"></span><span class="dur">' + dur + '</span>';
-        card.dataset.a = r.a; card.dataset.b = r.b; card.dataset.open = r.open ? '1' : '';
-        card.dataset.track = it.track;
-        card.innerHTML =
-          '<div class="ft-meta"><span class="ft-date">' + esc(it.date) + '</span>'
-          + '<span class="ft-tag" style="--tc:' + TRACKS[it.track].c + '">' + esc(it.track) + '</span></div>'
-          + '<h4>' + esc(it.title) + '</h4>'
+        const mc = document.createElement('div');
+        mc.className = 'mb-card' + (it.mile ? ' mile' : '') + (it.dim ? ' dim' : '');
+        mc.dataset.track = it.track;
+        mc.innerHTML = metaHTML(it) + '<h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it)
           + it.body.map(b => '<p>' + esc(b) + '</p>').join('')
           + (it.src ? '<span class="ft-src">' + esc(it.src) + '</span>' : '')
-          + '<div class="ft-spanwrap"><div class="ft-spaninner"><div class="ft-spanbar'
-          + (months > 1 ? '' : ' point') + '">' + spanbar + '</div></div></div>';
-        g.appendChild(card);
-        cards.push({el:card, it});
+          + '<div class="ft-spanwrap"><div class="ft-spaninner">' + durbar(it) + '</div></div>';
+        mc.onclick = () => mc.classList.toggle('open');
+        g.appendChild(mc);
+        const o = cards.find(x => x.it === it);
+        if (o) o.mel = mc;
       });
-      stream.appendChild(g);
-      groups.push({el:g, c});
+      mb.appendChild(g);
+      mgroups.push({el:g, c});
     });
 
-    /* —— 时间轴 —— */
-    const mk = cls => { const d = document.createElement('div'); d.className = cls; axisEl.appendChild(d); return d; };
-    mk('ax-line');
-    for (let m = mn; m <= mx + 1; m++) {
-      const major = (m % 12 === 0) || m === mn || m === mx + 1;
-      const t = mk('ax-tick' + (major ? ' major' : ''));
-      t.style.top = pct(m) + '%';
-      if (major) {
-        const lb = mk('ax-tick-lb');
-        lb.style.top = pct(m) + '%';
-        lb.textContent = m === mx + 1 ? '至今' : fmt(m);
-      }
-    }
-    groups.forEach(go => {
-      if (!go.c.range) return;
-      const top = pct(go.c.range.a), h = pct(go.c.range.b + 1) - top;
-      const band = mk('ax-band' + (go.c.interlude ? ' interlude' : ''));
-      band.style.top = top + '%'; band.style.height = h + '%';
-      const nav = () => { unfocus(); go.el.scrollIntoView({behavior:'smooth', block:'start'}); };
-      band.onclick = nav;
-      if (!go.c.interlude) {
-        const lb = mk('ax-band-lb');
-        lb.style.top = top + '%';
-        lb.textContent = go.c.name;
-        lb.onclick = nav;
-        go.lb = lb;
-      }
-    });
-    const buckets = {};
-    cards.forEach(o => {
-      const k = o.el.dataset.a + '|' + o.it.track;
-      (buckets[k] = buckets[k] || []).push(o);
-    });
-    Object.values(buckets).forEach(arr => {
-      arr.forEach((o, i) => {
-        const a = +o.el.dataset.a;
-        const dot = mk('ax-dot');
-        dot.style.left = LANE[o.it.track] + 'px';
-        dot.style.top = (pct(a) + (pct(a+1) - pct(a)) * (i + .5) / arr.length) + '%';
-        dot.style.background = TRACKS[o.it.track].c;
-        dot.dataset.track = o.it.track;
-      });
-    });
-    const hband = mk('ax-hband'), fband = mk('ax-fband');
-    const brA = mk('ax-bracket'), brB = mk('ax-bracket');
-    brA.innerHTML = '<span class="bl"></span>'; brB.innerHTML = '<span class="bl"></span>';
-    const axNow = mk('ax-now'); axNow.style.top = '0%';
-
-    function placeSpan(el, a, b){
-      el.style.top = pct(a) + '%';
-      el.style.height = (pct(b + 1) - pct(a)) + '%';
-    }
-
-    /* —— 滚动联动：进度点 + 当前章节高亮 —— */
-    let ticking = false;
-    function onScroll(){
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        const y = p6.scrollTop + p6.clientHeight * .35;
-        let curCard = null, curGroup = null;
-        cards.forEach(o => { if (!o.el.classList.contains('fh') && o.el.offsetTop <= y) curCard = o; });
-        groups.forEach(go => { if (!go.el.classList.contains('fh') && go.el.offsetTop <= y) curGroup = go; });
-        if (curCard) axNow.style.top = pct(+curCard.el.dataset.a + .5) + '%';
-        groups.forEach(go => go.lb && go.lb.classList.toggle('cur', go === curGroup));
-      });
-    }
-    p6.addEventListener('scroll', onScroll, {passive:true});
-
-    /* —— 入场动画（首次切到足迹页才触发） —— */
-    const io = new IntersectionObserver(es => es.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); }
-    }), {root:p6, rootMargin:'0px 0px -30px 0px', threshold:.04});
-    const arm = () => { cards.forEach(o => io.observe(o.el)); onScroll(); };
-    if (p6.classList.contains('active')) arm();
-    else {
-      const mo = new MutationObserver(() => {
-        if (p6.classList.contains('active')) { arm(); mo.disconnect(); }
-      });
-      mo.observe(p6, {attributes:true, attributeFilter:['class']});
-    }
-
-    /* —— 聚焦：点击卡片，轴上括出起止 —— */
+    /* ═══ 聚焦 ═══ */
     let focused = null;
-    function focus(card){
+    function focus(o){
       unfocus();
-      focused = card;
-      card.classList.add('focused');
-      stream.classList.add('focusing');
-      axisEl.classList.add('focusing');
+      focused = o;
+      o.el.classList.add('focused');
+      canvas.classList.add('focusing');
       hband.classList.remove('show');
-      const a = +card.dataset.a, b = +card.dataset.b, open = card.dataset.open === '1';
-      if (a === b) {
-        brA.style.top = pct(a + .5) + '%';
-        brA.querySelector('.bl').textContent = fmt(a);
+      const r = o.it.range || {a:mn, b:mn, open:false};
+      if (r.b > r.a) {
+        brA.style.left = X(r.a) + 'px';
+        brB.style.left = X(r.b + 1) + 'px';
+        brA.querySelector('.bl').textContent = fmt(r.a);
+        brB.querySelector('.bl').textContent = r.open ? '至今' : fmt(r.b);
+        fband.style.left = X(r.a) + 'px';
+        fband.style.width = (X(r.b + 1) - X(r.a)) + 'px';
+        brA.classList.add('show'); brB.classList.add('show'); fband.classList.add('show');
+      } else {
+        brA.style.left = (X(r.a) + COLW / 2) + 'px';
+        brA.querySelector('.bl').textContent = fmt(r.a);
         brA.classList.add('show');
         brB.classList.remove('show'); fband.classList.remove('show');
-      } else {
-        brA.style.top = pct(a) + '%';
-        brA.querySelector('.bl').textContent = fmt(a);
-        brB.style.top = pct(b + 1) + '%';
-        brB.querySelector('.bl').textContent = open ? '至今' : fmt(b);
-        placeSpan(fband, a, b);
-        brA.classList.add('show'); brB.classList.add('show'); fband.classList.add('show');
       }
-      setTimeout(() => card.scrollIntoView({behavior:'smooth', block:'center'}), 80);
+      const it = o.it;
+      detail.innerHTML = '<div class="hx-x" title="关闭">×</div>' + metaHTML(it)
+        + '<h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it)
+        + it.body.map(b => '<p>' + esc(b) + '</p>').join('')
+        + (it.src ? '<span class="ft-src">' + esc(it.src) + '</span>' : '')
+        + durbar(it);
+      let lx = X(r.a) + COLW + 16;
+      const cw = parseFloat(canvas.style.width);
+      if (lx + 456 > cw) lx = Math.max(8, X(r.a) - 456);
+      detail.style.left = lx + 'px';
+      detail.style.top = COLTOP + 'px';
+      detail.classList.add('show');
+      pop.classList.remove('show');
+      const target = Math.max(0, Math.min(lx, X(r.a)) - 70);
+      scroller.scrollTo({left: target, behavior:'smooth'});
     }
     function unfocus(){
       if (!focused) return;
-      focused.classList.remove('focused');
+      focused.el.classList.remove('focused');
       focused = null;
-      stream.classList.remove('focusing');
-      axisEl.classList.remove('focusing');
+      canvas.classList.remove('focusing');
       brA.classList.remove('show'); brB.classList.remove('show'); fband.classList.remove('show');
+      detail.classList.remove('show');
     }
-    p6.addEventListener('click', e => {
-      const card = e.target.closest('.ft-card');
-      if (card) { focused === card ? unfocus() : focus(card); }
+    canvas.addEventListener('click', e => {
+      if (dragMoved) return;
+      if (e.target.closest('.hx-x')) { unfocus(); return; }
+      if (e.target.closest('.hx-detail')) return;
+      const el = e.target.closest('.hx-strip,.hx-mile');
+      if (el) { focused === el.__o ? unfocus() : focus(el.__o); }
       else unfocus();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') unfocus(); });
 
-    /* —— hover 时在轴上预览跨度 —— */
-    stream.addEventListener('mouseover', e => {
-      const card = e.target.closest('.ft-card');
-      if (!card || focused) return;
-      placeSpan(hband, +card.dataset.a, +card.dataset.b);
-      hband.classList.add('show');
+    /* ═══ hover 摘要 + 轴上跨度预览 ═══ */
+    canvas.addEventListener('mouseover', e => {
+      const el = e.target.closest('.hx-strip,.hx-mile');
+      if (!el) {
+        pop.classList.remove('show');
+        if (!focused) hband.classList.remove('show');
+        return;
+      }
+      if (focused === el.__o) { pop.classList.remove('show'); return; }
+      const it = el.__o.it, r = it.range || {a:mn, b:mn};
+      pop.innerHTML = '<div class="d">' + esc(it.date) + ' · ' + esc(it.track) + '</div>'
+        + '<h5>' + esc(it.title) + '</h5><p>' + esc(it.body.join(' ')) + '</p>'
+        + '<div class="hint">点击查看全文与时间跨度</div>';
+      const rc = el.getBoundingClientRect();
+      let px = Math.min(rc.left, innerWidth - 318);
+      let py = rc.bottom + 8;
+      if (py + 170 > innerHeight) py = rc.top - 178;
+      pop.style.left = px + 'px';
+      pop.style.top = py + 'px';
+      pop.classList.add('show');
+      if (!focused) {
+        hband.style.left = X(r.a) + 'px';
+        hband.style.width = (X((r.b != null ? r.b : r.a) + 1) - X(r.a)) + 'px';
+        hband.classList.add('show');
+      }
     });
-    stream.addEventListener('mouseout', e => {
-      if (!e.relatedTarget || !e.relatedTarget.closest('.ft-card')) hband.classList.remove('show');
+    canvas.addEventListener('mouseleave', () => {
+      pop.classList.remove('show');
+      if (!focused) hband.classList.remove('show');
+    });
+    scroller.addEventListener('scroll', () => pop.classList.remove('show'), {passive:true});
+
+    /* ═══ 滚轮转横向 + 拖拽平移 ═══ */
+    scroller.addEventListener('wheel', e => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        scroller.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, {passive:false});
+    let dragMoved = false, dragging = false, dx0 = 0, sl0 = 0;
+    scroller.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || e.target.closest('.hx-detail')) return;
+      dragging = true; dragMoved = false;
+      dx0 = e.clientX; sl0 = scroller.scrollLeft;
+    });
+    window.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const d = e.clientX - dx0;
+      if (Math.abs(d) > 6) dragMoved = true;
+      if (dragMoved) scroller.scrollLeft = sl0 - d;
+    });
+    window.addEventListener('pointerup', () => {
+      dragging = false;
+      setTimeout(() => { dragMoved = false; }, 0);
     });
 
-    /* —— 轨道筛选：可组合可单选 —— */
+    /* ═══ 入场动画：列进入视口时逐条浮现 ═══ */
+    const io = new IntersectionObserver(es => es.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    }), {root:scroller, threshold:.05});
+    const arm = () => Object.values(cols).forEach(c => io.observe(c));
+    if (page.classList.contains('active')) arm();
+    else {
+      const mo = new MutationObserver(() => {
+        if (page.classList.contains('active')) { arm(); mo.disconnect(); }
+      });
+      mo.observe(page, {attributes:true, attributeFilter:['class']});
+    }
+
+    /* ═══ 轨道筛选 ═══ */
     const all = Object.keys(TRACKS);
     let active = new Set(all);
     const chips = [];
@@ -1618,23 +1578,17 @@
     function apply(){
       unfocus();
       const filtered = active.size < all.length;
-      stream.classList.toggle('filtered', filtered);
+      canvas.classList.toggle('filtered', filtered);
+      mb.classList.toggle('filtered', filtered);
       cards.forEach(o => {
         const show = active.has(o.it.track);
-        if (show && o.el.classList.contains('fh')) {
-          o.el.classList.remove('fh');
-          o.el.classList.add('fo');
-          requestAnimationFrame(() => requestAnimationFrame(() => o.el.classList.remove('fo')));
-        } else if (!show) {
-          o.el.classList.add('fh');
-          o.el.classList.remove('fo');
-        }
+        o.el.classList.toggle('fh', !show);
+        if (o.mel) o.mel.classList.toggle('fh', !show);
       });
-      groups.forEach(go => {
-        const any = go.c.items.some(it => it.todo ? !filtered : active.has(it.track));
-        go.el.classList.toggle('fh', !any);
+      mgroups.forEach(g => {
+        const any = g.c.items.some(it => it.todo ? !filtered : active.has(it.track));
+        g.el.classList.toggle('fh', !any);
       });
-      axisEl.querySelectorAll('.ax-dot').forEach(d => d.classList.toggle('off', !active.has(d.dataset.track)));
       chips.forEach(ch => {
         if (ch.name === '全部') ch.el.classList.toggle('on', !filtered);
         else {
@@ -1642,7 +1596,6 @@
           ch.el.classList.toggle('mute', !active.has(ch.name));
         }
       });
-      onScroll();
     }
     apply();
   }
