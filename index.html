@@ -189,7 +189,7 @@
     .chron-src strong{color:var(--gold-lt);font-weight:700}
 
     /* —— 轨道筛选 —— */
-    .ft-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 10px}
+    .ft-bar{position:relative;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 100px 10px 0}
     .ft-bar-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-right:2px}
     .ft-chip{
       display:inline-flex;align-items:center;gap:7px;
@@ -213,7 +213,7 @@
     }
     .hx-scroll::-webkit-scrollbar{height:4px}
     .hx-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-    .hx-canvas{position:relative;height:100%;min-height:360px;user-select:none}
+    .hx-canvas{position:relative;min-height:100%;user-select:none}
     .hx-zone{position:absolute;top:0;bottom:0;background:rgba(164,129,17,.035);border-radius:8px;pointer-events:none}
     .hx-ch{position:absolute;top:2px;z-index:2;overflow:hidden;transition:opacity .35s;pointer-events:none}
     .hx-ch .pd{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;white-space:nowrap}
@@ -256,7 +256,7 @@
     .ev-role{font-size:10.5px;color:var(--gold);letter-spacing:.02em}
     .hx-strip.fh,.hx-mile.fh{display:none}
     .hx-todo{
-      position:absolute;border:1px dashed var(--border);border-radius:10px;
+      border:1px dashed var(--border);border-radius:10px;
       padding:12px 14px;font-size:11.5px;color:var(--muted);line-height:1.8;background:var(--gold-dim);
     }
     .hx-todo strong{color:var(--gold-lt);font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
@@ -311,6 +311,71 @@
     .hx-pop p{font-size:11.5px;color:var(--muted);line-height:1.7;
       display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
     .hx-pop .hint{font-size:10px;color:var(--faint);margin-top:6px}
+
+    /* —— 缩放控制（XMind 式） —— */
+    .hx-zoomctl{position:absolute;right:0;top:2px;display:flex;gap:4px}
+    .hx-zbtn{
+      width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+      border-radius:7px;background:var(--bg2);border:1px solid var(--border2);
+      color:var(--muted);font-size:14px;cursor:pointer;user-select:none;transition:all .2s;
+    }
+    .hx-zbtn:hover{color:var(--gold-lt);border-color:var(--border)}
+    .hx-zbtn.dis{opacity:.3;pointer-events:none}
+
+    /* —— 今日分界线 —— */
+    .hx-today{
+      position:absolute;top:78px;bottom:6px;width:0;
+      border-left:2px dashed var(--gold);opacity:.5;z-index:3;pointer-events:none;
+    }
+    .hx-today .tl{
+      position:absolute;top:-17px;left:-14px;
+      font-size:10px;font-weight:700;color:var(--gold-lt);white-space:nowrap;
+      background:var(--gold-dim);border:1px solid var(--border);border-radius:5px;padding:1px 6px;
+    }
+
+    /* —— 规划层（未来事件，虚线 + 状态标） —— */
+    .hx-zone.plan{background:rgba(106,180,123,.035)}
+    .hx-ch.plan .pd{color:var(--green)}
+    .hx-strip.plan{border-style:dashed}
+    .hx-mile.plan{border-style:dashed;background:rgba(106,180,123,.05)}
+    .st{margin-left:auto;flex:none;font-size:11px;font-weight:700}
+    .stt{font-size:10px;font-weight:700;letter-spacing:.04em}
+    .hx-mile .md .stt{margin-left:8px}
+    .st.done,.stt.done{color:var(--green)}
+    .st.doing,.stt.doing{color:var(--gold-lt)}
+    .st.todo,.stt.todo{color:var(--faint)}
+
+    /* —— 总览模式元素（z1 里程碑 / z2 全览） —— */
+    .hx-band2{
+      position:absolute;top:101px;height:9px;border-radius:4px;
+      background:rgba(164,129,17,.26);opacity:0;transition:opacity .3s;pointer-events:none;
+    }
+    .hx-band2.alt{background:rgba(164,129,17,.12)}
+    .hx-band2.inter{background:rgba(255,255,255,.06)}
+    .hx-band2.plan{background:rgba(106,180,123,.13);border:1px dashed rgba(106,180,123,.35)}
+    .hx-band2 .zlb{
+      position:absolute;top:13px;left:50%;transform:translateX(-50%);
+      font-size:9.5px;color:var(--muted);white-space:nowrap;
+    }
+    .hx-ms.plan{background:transparent;border:2px solid var(--gold-lt);box-shadow:none}
+    .hx-ms.pt{border-radius:50%;background:var(--bg);border:2px solid var(--faint);width:8px;height:8px;box-shadow:none;transform:translate(-50%,-50%)}
+    .hx-ms.pt.done{border-color:var(--green)}
+    .hx-ms.pt.doing{border-color:var(--gold-lt)}
+    .hx-ms{cursor:pointer}
+    .hx-ms-lb{
+      position:absolute;font-size:10px;color:var(--text);white-space:nowrap;
+      max-width:170px;overflow:hidden;text-overflow:ellipsis;cursor:pointer;
+      opacity:0;pointer-events:none;transition:opacity .3s;
+    }
+    .hx-ms-lb.sec{color:var(--muted)}
+    .hx-ms.fh,.hx-ms-lb.fh{display:none!important}
+    .hx-canvas.z1 .hx-col,.hx-canvas.z2 .hx-col,
+    .hx-canvas.z1 .hx-ch,.hx-canvas.z2 .hx-ch,
+    .hx-canvas.z1 .hx-zone,.hx-canvas.z2 .hx-zone{display:none}
+    .hx-canvas.z1 .hx-band2,.hx-canvas.z2 .hx-band2{opacity:1}
+    .hx-canvas.z1 .hx-ms-lb,.hx-canvas.z2 .hx-ms-lb{opacity:1;pointer-events:auto}
+    .hx-canvas.z2 .hx-ms-lb.sec{opacity:0;pointer-events:none}
+    .hx-canvas.z2 .hx-ms-lb{max-width:118px}
 
     /* —— 通用事件元素（详情卡 / 移动端共用） —— */
     .ft-meta{display:flex;align-items:center;gap:12px;margin-bottom:5px}
@@ -371,17 +436,6 @@
       .hx-col.in>*{animation:none}
       .hx-br,.hx-detail,.ft-spanwrap,.hx-strip,.hx-mile{transition:none!important}
     }
-    .certs-row{
-      max-width:960px;margin:0 auto;padding:40px 40px 0;
-      border-top:1px solid var(--border2);
-    }
-    .certs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
-    .cert-card{
-      background:var(--bg2);border:1px solid var(--border2);
-      border-radius:9px;padding:16px;
-      font-size:12px;color:var(--muted);line-height:1.7;
-    }
-    .cert-card strong{display:block;color:var(--text);font-size:13px;margin-bottom:3px}
 
     /* ════════════════════════════════════
        PAGE 3 · 作品
@@ -615,10 +669,10 @@
       nav{padding:14px 18px}
       .nav-tabs li{padding:6px 12px;font-size:12px}
       .hero-body{grid-template-columns:1fr;gap:40px;padding:120px 20px 60px;min-height:auto}
-      .wrap,.full-wrap,.certs-row,
+      .wrap,.full-wrap,
       .work-pg,.learn-pg,.create-pg,.hx-hdr{padding-left:20px;padding-right:20px}
       .mentor-grid,.reading-grid,.proj-grid{grid-template-columns:1fr}
-      .skills-grid,.certs-grid{grid-template-columns:1fr 1fr}
+      .skills-grid{grid-template-columns:1fr 1fr}
       .listen-grid{grid-template-columns:1fr}
       .create-cols{grid-template-columns:1fr}
       .weekly-stat-row{grid-template-columns:1fr 1fr}
@@ -740,6 +794,11 @@
       </div>
       <div class="ft-bar" id="ftBar" hidden>
         <span class="ft-bar-label">轨道</span>
+        <div class="hx-zoomctl">
+          <div class="hx-zbtn" id="zOut" title="缩小（只看里程碑）">−</div>
+          <div class="hx-zbtn" id="zFit" title="全览">⊡</div>
+          <div class="hx-zbtn dis" id="zIn" title="放大（全部事件）">+</div>
+        </div>
       </div>
     </div>
     <!-- 时间线数据在 footprints.md，由页面底部脚本运行时渲染 -->
@@ -747,23 +806,6 @@
     <div class="mb-stream" id="mbStream"></div>
   </div>
 
-  <div class="certs-row">
-    <div class="eyebrow">Certificates &amp; Awards</div>
-    <div class="certs-grid">
-      <div class="cert-card">
-        <strong>腾讯未来 PM 创造营</strong>进阶实战方向结营证书
-      </div>
-      <div class="cert-card">
-        <strong>明月科创 MINI CAMP</strong>结营证书
-      </div>
-      <div class="cert-card">
-        <strong>电商三创赛</strong>校赛二等奖
-      </div>
-      <div class="cert-card">
-        <strong>挑战杯</strong>校赛优胜奖
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ════════════════════════
@@ -1199,7 +1241,7 @@
 </script>
 
 <script>
-/* ── 经历页：footprints.md 运行时渲染（横版时间线 + 移动端竖版回退） ── */
+/* ── 经历页：footprints.md 运行时渲染（横版时间线 + 缩放 + 规划层 + 移动端回退） ── */
 (function(){
   const TRACKS = {
     '项目':{c:'#C9A527'},
@@ -1207,13 +1249,15 @@
     '情绪':{c:'#a78bfa'},
     '生活':{c:'#9a917c'},
   };
-  const COLW = 232, COLTOP = 112;
+  const COLTOP = 112;
+  const STATUS = {done:{ic:'✓', t:'已完成'}, doing:{ic:'◐', t:'进行中'}, todo:{ic:'○', t:'未开始'}};
   const page = document.getElementById('p2');
   const scroller = document.getElementById('hxScroll');
   const canvas = document.getElementById('hxCanvas');
   const mb = document.getElementById('mbStream');
   const bar = document.getElementById('ftBar');
   const NOW = (() => { const d = new Date(); return d.getFullYear()*12 + d.getMonth(); })();
+  const DAYFRAC = Math.min(1, new Date().getDate() / 30);
 
   fetch('footprints.md')
     .then(r => { if (!r.ok) throw 0; return r.text(); })
@@ -1256,13 +1300,15 @@
         if (f[0] === '待补充') { item = {todo:true, body:[]}; ch && ch.items.push(item); continue; }
         item = {date:f[0], range:parseRange(f[0]), track:TRACKS[f[1]] ? f[1] : '生活',
                 title:f[2] || '', dim:f.includes('dim'), mile:f.includes('里程碑'),
-                role:'', metrics:null, body:[], src:''};
+                plan:f.includes('计划') || (ch && ch.plan),
+                role:'', metrics:null, status:null, body:[], src:''};
         ch && ch.items.push(item);
       } else if (lt.startsWith('# ')) {
         const seg = lt.slice(2).split('·').map(s => s.trim());
         ch = {kind:seg[0]||'', name:seg[1]||'', period:seg[2]||'',
               title:seg.slice(3).join(' · '), sub:'',
-              interlude:/幕间/.test(seg[0]||''), range:parseRange(seg[2]||''), items:[]};
+              interlude:/幕间/.test(seg[0]||''), plan:/规划/.test(seg[0]||''),
+              range:parseRange(seg[2]||''), items:[]};
         chapters.push(ch); item = null;
       } else if (lt.startsWith('>')) {
         if (ch && !item) ch.sub += (ch.sub ? ' ' : '') + lt.replace(/^>\s*/, '');
@@ -1271,6 +1317,10 @@
         if (lt.startsWith('源：')) item.src = lt;
         else if (lt.startsWith('角色：')) item.role = lt.slice(3);
         else if (lt.startsWith('指标：')) item.metrics = lt.slice(3).split('/').map(s => s.trim()).filter(Boolean);
+        else if (lt.startsWith('状态：')) {
+          const s = lt.slice(3);
+          item.status = /完成/.test(s) ? 'done' : /进行/.test(s) ? 'doing' : 'todo';
+        }
         else item.body.push(lt);
       }
     }
@@ -1285,10 +1335,17 @@
       if (c.range) { mn = Math.min(mn, c.range.a); mx = Math.max(mx, c.range.b); }
       c.items.forEach(it => { if (it.range) { mn = Math.min(mn, it.range.a); mx = Math.max(mx, it.range.b); } });
     });
-    const X = m => (m - mn) * COLW;
+    const months = mx + 1 - mn;
+    let colW = 232;
+    const X = m => (m - mn) * colW;
     const cards = [];
     const mk = (cls, parent) => { const d = document.createElement('div'); d.className = cls; (parent || canvas).appendChild(d); return d; };
 
+    function statusHTML(it, cls){
+      if (!it.plan || !it.status) return '';
+      const s = STATUS[it.status];
+      return '<span class="' + cls + ' ' + it.status + '">' + (cls === 'st' ? s.ic : s.ic + ' ' + s.t) + '</span>';
+    }
     function durbar(it){
       const r = it.range || {a:mn, b:mn, open:false};
       const n = r.b - r.a + 1;
@@ -1300,58 +1357,52 @@
     }
     function metaHTML(it){
       return '<div class="ft-meta"><span class="ft-date">' + esc(it.date) + '</span>'
-        + '<span class="ft-tag" style="--tc:' + TRACKS[it.track].c + '">' + esc(it.track) + '</span></div>';
+        + '<span class="ft-tag" style="--tc:' + TRACKS[it.track].c + '">' + esc(it.track) + '</span>'
+        + statusHTML(it, 'stt') + '</div>';
     }
     function roleMetricsHTML(it){
       return (it.role ? '<span class="ev-role">' + esc(it.role) + '</span>' : '')
         + (it.metrics ? '<div class="metrics">' + it.metrics.map(x => '<span class="m-chip">' + esc(x) + '</span>').join('') + '</div>' : '');
     }
 
-    /* ═══ 桌面横版画布 ═══ */
-    canvas.style.width = ((mx + 1 - mn) * COLW + 330) + 'px';
+    /* ═══ 桌面横版画布（注册元素 + relayout 支持缩放） ═══ */
+    const R = {zones:[], bands:[], ticks:[], ticklbs:[], chs:[], cols:{}, marks:[]};
     let semIdx = 0;
     chapters.forEach(c => {
-      if (!c.range || c.interlude) return;
-      if (semIdx % 2 === 0) {
-        const z = mk('hx-zone');
-        z.style.left = X(c.range.a) + 'px';
-        z.style.width = (X(c.range.b + 1) - X(c.range.a)) + 'px';
+      if (!c.range) return;
+      if (!c.interlude && !c.plan && semIdx++ % 2 === 0) {
+        R.zones.push({el:mk('hx-zone'), a:c.range.a, b:c.range.b});
       }
-      semIdx++;
+      if (c.plan) R.zones.push({el:mk('hx-zone plan'), a:c.range.a, b:c.range.b});
+      const b2 = mk('hx-band2' + (c.interlude ? ' inter' : c.plan ? ' plan' : (semIdx % 2 ? '' : ' alt')));
+      if (!c.interlude) b2.innerHTML = '<span class="zlb">' + esc(c.name) + '</span>';
+      R.bands.push({el:b2, a:c.range.a, b:c.range.b});
     });
     mk('hx-rl');
     for (let m = mn; m <= mx + 1; m++) {
       const major = (m % 12 === 0) || m === mn || m === mx + 1;
-      const t = mk('hx-tick' + (major ? ' major' : ''));
-      t.style.left = X(m) + 'px';
+      R.ticks.push({el:mk('hx-tick' + (major ? ' major' : '')), m});
       if (major) {
         const lb = mk('hx-tick-lb');
-        lb.style.left = X(m) + 'px';
         if (m === mn) lb.style.transform = 'none';
         if (m === mx + 1) lb.style.transform = 'translateX(-100%)';
-        lb.textContent = m === mx + 1 ? '至今' : fmt(m);
+        lb.textContent = fmt(m);
+        R.ticklbs.push({el:lb, m});
       }
     }
     chapters.forEach(c => {
       if (!c.range) return;
-      const h = mk('hx-ch' + (c.interlude ? ' interlude' : ''));
-      h.style.left = (X(c.range.a) + 8) + 'px';
-      h.style.maxWidth = (X(c.range.b + 1) - X(c.range.a) - 16) + 'px';
+      const h = mk('hx-ch' + (c.interlude ? ' interlude' : '') + (c.plan ? ' plan' : ''));
       h.innerHTML = c.interlude
         ? '<div class="il">' + esc([c.kind, c.name, c.title].filter(Boolean).join(' · ')) + '</div>'
         : '<div class="pd">' + esc([c.kind, c.name, c.period].filter(Boolean).join(' · ')) + '</div>'
           + '<h3>' + esc(c.title) + '</h3>'
           + (c.sub ? '<div class="sb">' + esc(c.sub) + '</div>' : '');
+      R.chs.push({el:h, a:c.range.a, b:c.range.b});
     });
-    const cols = {};
     const colOf = m => {
-      if (!cols[m]) {
-        const c = mk('hx-col');
-        c.style.left = (X(m) + 8) + 'px';
-        c.style.width = (COLW - 18) + 'px';
-        cols[m] = c;
-      }
-      return cols[m];
+      if (!R.cols[m]) R.cols[m] = {el:mk('hx-col'), m};
+      return R.cols[m].el;
     };
     let todoData = null;
     chapters.forEach(c => c.items.forEach(it => {
@@ -1361,16 +1412,16 @@
       let el;
       if (it.mile) {
         el = document.createElement('div');
-        el.className = 'hx-mile';
-        el.innerHTML = '<div class="md">' + esc(it.date) + '</div><h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it);
-        const ms = mk('hx-ms');
-        ms.style.left = (X(a) + COLW / 2) + 'px';
+        el.className = 'hx-mile' + (it.plan ? ' plan' : '');
+        el.innerHTML = '<div class="md">' + esc(it.date) + statusHTML(it, 'stt') + '</div>'
+          + '<h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it);
       } else {
         el = document.createElement('div');
-        el.className = 'hx-strip' + (it.dim ? ' dim' : '');
+        el.className = 'hx-strip' + (it.dim ? ' dim' : '') + (it.plan ? ' plan' : '');
         el.innerHTML = '<span class="dt" style="--tc:' + TRACKS[it.track].c + '"></span>'
           + '<span class="tt">' + esc(it.title) + '</span>'
-          + (it.range && it.range.b > it.range.a ? '<span class="rg">▸▸</span>' : '');
+          + (it.plan ? statusHTML(it, 'st')
+             : (it.range && it.range.b > it.range.a ? '<span class="rg">▸▸</span>' : ''));
       }
       el.dataset.track = it.track;
       el.style.setProperty('--i', col.children.length);
@@ -1378,14 +1429,25 @@
       const o = {el, it};
       el.__o = o;
       cards.push(o);
+      if (it.mile || it.plan) {
+        const ms = mk('hx-ms' + (it.mile ? (it.plan ? ' plan' : '') : ' pt ' + (it.status || 'todo')));
+        ms.__o = o;
+        const lb = mk('hx-ms-lb' + (it.mile ? '' : ' sec'));
+        lb.textContent = it.title.split(/[：·]/)[0].trim();
+        lb.__o = o;
+        R.marks.push({el:ms, lb, m:a, o});
+      }
     }));
     if (todoData) {
-      const td = mk('hx-todo');
-      td.style.left = (X(mx + 1) + 30) + 'px';
-      td.style.top = COLTOP + 'px';
-      td.style.width = '250px';
+      const td = document.createElement('div');
+      td.className = 'hx-todo';
       td.innerHTML = '<strong>待补充</strong>' + esc(todoData.body.join(' '));
+      colOf(NOW).appendChild(td);
     }
+    R.marks.sort((p, q) => p.m - q.m);
+    R.marks.forEach((mark, i) => { mark.lb.style.top = (132 + (i % 4) * 21) + 'px'; });
+    const today = mk('hx-today');
+    today.innerHTML = '<span class="tl">今 · ' + fmt(NOW) + '</span>';
     const fband = mk('hx-bandx'), hband = mk('hx-bandx lite');
     const brA = mk('hx-br'), brB = mk('hx-br');
     brA.innerHTML = '<span class="bl"></span>';
@@ -1395,11 +1457,64 @@
     pop.className = 'hx-pop';
     document.body.appendChild(pop);
 
+    function relayout(){
+      canvas.style.width = (months * colW + 110) + 'px';
+      R.zones.forEach(z => { z.el.style.left = X(z.a) + 'px'; z.el.style.width = (X(z.b + 1) - X(z.a)) + 'px'; });
+      R.bands.forEach(z => { z.el.style.left = X(z.a) + 'px'; z.el.style.width = (X(z.b + 1) - X(z.a)) + 'px'; });
+      R.ticks.forEach(t => t.el.style.left = X(t.m) + 'px');
+      R.ticklbs.forEach(t => t.el.style.left = X(t.m) + 'px');
+      R.chs.forEach(c => { c.el.style.left = (X(c.a) + 8) + 'px'; c.el.style.maxWidth = (X(c.b + 1) - X(c.a) - 16) + 'px'; });
+      Object.values(R.cols).forEach(c => { c.el.style.left = (X(c.m) + 8) + 'px'; c.el.style.width = (colW - 18) + 'px'; });
+      R.marks.forEach(mark => {
+        mark.el.style.left = (X(mark.m) + colW / 2) + 'px';
+        mark.lb.style.left = (X(mark.m) + colW / 2 + 8) + 'px';
+      });
+      today.style.left = (X(NOW) + colW * DAYFRAC) + 'px';
+      requestAnimationFrame(updateCanvasHeight);
+    }
+
+    /* ═══ 缩放（XMind 式：详细 / 里程碑 / 全览） ═══ */
+    const fitW = () => Math.max(20, Math.floor((scroller.clientWidth - 110) / months));
+    let zLevel = 0;
+    const zW = () => [232, 112, fitW()][zLevel];
+    function updateCanvasHeight() {
+      if (zLevel !== 0) { canvas.style.height = ''; return; }
+      let maxH = 0;
+      Object.values(R.cols).forEach(c => { maxH = Math.max(maxH, c.el.offsetHeight); });
+      const needed = 112 + maxH + 20;
+      canvas.style.height = needed > scroller.clientHeight ? needed + 'px' : '';
+    }
+    const zBtns = {
+      zin: document.getElementById('zIn'),
+      zout: document.getElementById('zOut'),
+      zfit: document.getElementById('zFit'),
+    };
+    function setZoom(level){
+      level = Math.max(0, Math.min(2, level));
+      if (level === zLevel) return;
+      unfocus();
+      const cm = mn + (scroller.scrollLeft + scroller.clientWidth / 2) / colW;
+      zLevel = level;
+      colW = zW();
+      canvas.classList.remove('z0','z1','z2');
+      canvas.classList.add('z' + zLevel);
+      relayout();
+      scroller.scrollLeft = Math.max(0, (cm - mn) * colW - scroller.clientWidth / 2);
+      zBtns.zin.classList.toggle('dis', zLevel === 0);
+      zBtns.zout.classList.toggle('dis', zLevel === 2);
+    }
+    zBtns.zin.onclick = () => setZoom(zLevel - 1);
+    zBtns.zout.onclick = () => setZoom(zLevel + 1);
+    zBtns.zfit.onclick = () => setZoom(2);
+    canvas.classList.add('z0');
+    relayout();
+    window.addEventListener('resize', () => { if (zLevel === 2) { colW = fitW(); relayout(); } });
+
     /* ═══ 移动端竖版 ═══ */
     const mgroups = [];
     chapters.forEach(c => {
       const g = document.createElement('div');
-      g.className = 'mb-group' + (c.interlude ? ' interlude' : '');
+      g.className = 'mb-group' + (c.interlude ? ' interlude' : '') + (c.plan ? ' plan' : '');
       g.innerHTML = '<div class="mb-hd"><div class="pd">' + esc([c.kind, c.name, c.period].filter(Boolean).join(' · ')) + '</div>'
         + '<h3>' + esc(c.title) + '</h3>'
         + (c.sub ? '<div class="sb">' + esc(c.sub) + '</div>' : '') + '</div>';
@@ -1411,7 +1526,7 @@
           g.appendChild(d); return;
         }
         const mc = document.createElement('div');
-        mc.className = 'mb-card' + (it.mile ? ' mile' : '') + (it.dim ? ' dim' : '');
+        mc.className = 'mb-card' + (it.mile ? ' mile' : '') + (it.dim ? ' dim' : '') + (it.plan ? ' plan' : '');
         mc.dataset.track = it.track;
         mc.innerHTML = metaHTML(it) + '<h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it)
           + it.body.map(b => '<p>' + esc(b) + '</p>').join('')
@@ -1444,7 +1559,7 @@
         fband.style.width = (X(r.b + 1) - X(r.a)) + 'px';
         brA.classList.add('show'); brB.classList.add('show'); fband.classList.add('show');
       } else {
-        brA.style.left = (X(r.a) + COLW / 2) + 'px';
+        brA.style.left = (X(r.a) + colW / 2) + 'px';
         brA.querySelector('.bl').textContent = fmt(r.a);
         brA.classList.add('show');
         brB.classList.remove('show'); fband.classList.remove('show');
@@ -1455,7 +1570,7 @@
         + it.body.map(b => '<p>' + esc(b) + '</p>').join('')
         + (it.src ? '<span class="ft-src">' + esc(it.src) + '</span>' : '')
         + durbar(it);
-      let lx = X(r.a) + COLW + 16;
+      let lx = X(r.a) + colW + 16;
       const cw = parseFloat(canvas.style.width);
       if (lx + 456 > cw) lx = Math.max(8, X(r.a) - 456);
       detail.style.left = lx + 'px';
@@ -1477,23 +1592,24 @@
       if (dragMoved) return;
       if (e.target.closest('.hx-x')) { unfocus(); return; }
       if (e.target.closest('.hx-detail')) return;
-      const el = e.target.closest('.hx-strip,.hx-mile');
-      if (el) { focused === el.__o ? unfocus() : focus(el.__o); }
-      else unfocus();
+      const el = e.target.closest('.hx-strip,.hx-mile,.hx-ms,.hx-ms-lb');
+      if (el && el.__o) { focused === el.__o ? unfocus() : focus(el.__o); }
+      else if (!el) unfocus();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') unfocus(); });
 
     /* ═══ hover 摘要 + 轴上跨度预览 ═══ */
     canvas.addEventListener('mouseover', e => {
-      const el = e.target.closest('.hx-strip,.hx-mile');
-      if (!el) {
+      const el = e.target.closest('.hx-strip,.hx-mile,.hx-ms,.hx-ms-lb');
+      if (!el || !el.__o) {
         pop.classList.remove('show');
         if (!focused) hband.classList.remove('show');
         return;
       }
       if (focused === el.__o) { pop.classList.remove('show'); return; }
       const it = el.__o.it, r = it.range || {a:mn, b:mn};
-      pop.innerHTML = '<div class="d">' + esc(it.date) + ' · ' + esc(it.track) + '</div>'
+      pop.innerHTML = '<div class="d">' + esc(it.date) + ' · ' + esc(it.track)
+        + (it.plan && it.status ? ' · ' + STATUS[it.status].t : '') + '</div>'
         + '<h5>' + esc(it.title) + '</h5><p>' + esc(it.body.join(' ')) + '</p>'
         + '<div class="hint">点击查看全文与时间跨度</div>';
       const rc = el.getBoundingClientRect();
@@ -1515,8 +1631,13 @@
     });
     scroller.addEventListener('scroll', () => pop.classList.remove('show'), {passive:true});
 
-    /* ═══ 滚轮转横向 + 拖拽平移 ═══ */
+    /* ═══ 滚轮：平移 / Ctrl+滚轮缩放；拖拽平移 ═══ */
     scroller.addEventListener('wheel', e => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        setZoom(zLevel + (e.deltaY > 0 ? 1 : -1));
+        return;
+      }
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         scroller.scrollLeft += e.deltaY;
         e.preventDefault();
@@ -1539,11 +1660,11 @@
       setTimeout(() => { dragMoved = false; }, 0);
     });
 
-    /* ═══ 入场动画：列进入视口时逐条浮现 ═══ */
+    /* ═══ 入场动画 ═══ */
     const io = new IntersectionObserver(es => es.forEach(en => {
       if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
     }), {root:scroller, threshold:.05});
-    const arm = () => Object.values(cols).forEach(c => io.observe(c));
+    const arm = () => Object.values(R.cols).forEach(c => io.observe(c.el));
     if (page.classList.contains('active')) arm();
     else {
       const mo = new MutationObserver(() => {
@@ -1584,6 +1705,11 @@
         const show = active.has(o.it.track);
         o.el.classList.toggle('fh', !show);
         if (o.mel) o.mel.classList.toggle('fh', !show);
+      });
+      R.marks.forEach(mark => {
+        const show = active.has(mark.o.it.track);
+        mark.el.classList.toggle('fh', !show);
+        mark.lb.classList.toggle('fh', !show);
       });
       mgroups.forEach(g => {
         const any = g.c.items.some(it => it.todo ? !filtered : active.has(it.track));
