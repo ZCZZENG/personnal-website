@@ -1,0 +1,11 @@
+.git
+.git/**
+.wrangler
+.wrangler/**
+node_modules
+node_modules/**
+HANDOFF-时间线交接.md
+DESIGN.md
+PRODUCT.md
+本地预览.command
+vercel.json
