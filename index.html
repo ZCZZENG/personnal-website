@@ -407,25 +407,44 @@
     .ft-fallback{border:1px dashed var(--border);border-radius:10px;padding:18px 20px;font-size:13px;color:var(--muted);line-height:2;max-width:640px}
     .ft-fallback code{color:var(--gold-lt);font-size:12px}
 
-    /* —— 移动端竖版回退 —— */
-    .mb-stream{display:none;max-width:720px;margin:0 auto;padding:0 20px 40px}
-    .mb-group{margin:34px 0}
+    /* —— 移动端竖版回退（左侧时间线轴，参考 PC 横版轨道视觉） —— */
+    .mb-stream{display:none;max-width:720px;margin:0 auto;padding:0 20px 40px 38px;position:relative}
+    .mb-stream::before{
+      content:'';position:absolute;left:17px;top:6px;bottom:14px;width:2px;
+      background:var(--border2);
+    }
+    .mb-group{margin:30px 0;position:relative}
     .mb-group.fh{display:none}
+    .mb-hd{position:relative}
+    .mb-hd::before{
+      content:'';position:absolute;left:-25px;top:3px;width:10px;height:10px;
+      border-radius:50%;background:var(--bg);border:2px solid var(--gold);box-sizing:border-box;
+    }
     .mb-hd .pd{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
     .mb-hd h3{font-size:20px;font-weight:700;letter-spacing:-.02em}
     .mb-hd .sb{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.8}
     .mb-group.interlude .mb-hd h3{font-size:15px;color:var(--muted)}
     .mb-group.interlude .mb-hd .pd{color:var(--faint)}
+    .mb-group.interlude .mb-hd::before{border-color:var(--faint);width:7px;height:7px;left:-23.5px}
     .mb-card{
       background:var(--bg2);border:1px solid var(--border2);
-      border-radius:11px;padding:14px 16px;margin-top:10px;
+      border-radius:11px;padding:12px 16px;margin-top:8px;position:relative;
+    }
+    .mb-card::before{
+      content:'';position:absolute;left:-24px;top:17px;width:8px;height:8px;
+      border-radius:50%;background:var(--tc,var(--border));border:2px solid var(--bg);box-sizing:border-box;
     }
     .mb-card.mile{background:var(--bg3);border-color:var(--border)}
+    .mb-card.mile::before{
+      width:12px;height:12px;left:-26px;top:15px;background:var(--gold);
+      box-shadow:0 0 0 3px var(--gold-dim);
+    }
     .mb-card h4{font-size:14px;font-weight:600;margin-bottom:3px}
     .mb-card .ev-role{display:block;margin-bottom:5px}
     .mb-card .metrics{margin:0 0 6px}
     .mb-card p{font-size:12.5px;color:var(--muted);line-height:1.8}
     .mb-card.dim{background:transparent;opacity:.82}
+    .mb-card.dim::before{opacity:.6}
     .mb-card.fh{display:none}
     .ft-spanwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1)}
     .mb-card.open .ft-spanwrap{grid-template-rows:1fr}
@@ -664,6 +683,38 @@
     }
     .contact-item:hover{border-color:var(--border);color:var(--text)}
 
+    /* ── 下载入口：挂在 ZCZ logo 上，桌面/移动端通用 ── */
+    .nav-logo-wrap{position:relative}
+    .nav-logo-wrap.open .nav-logo{color:var(--text)}
+    .nav-dl-menu{
+      display:none;position:absolute;left:0;top:calc(100% + 10px);
+      background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+      padding:6px;min-width:132px;flex-direction:column;gap:2px;
+      box-shadow:0 8px 24px rgba(0,0,0,.45);z-index:210;
+    }
+    .nav-logo-wrap.open .nav-dl-menu{display:flex}
+    .nav-dl-menu a{
+      padding:8px 10px;border-radius:6px;font-size:12px;color:var(--text);
+      text-decoration:none;display:flex;align-items:center;gap:6px;
+    }
+    .nav-dl-menu a:hover{background:var(--bg3);color:var(--gold-lt)}
+
+    /* ── 移动端：时间线章节 tab 导航 ── */
+    .mb-tabnav{
+      display:none;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+      padding:10px 20px;margin:0 0 6px;background:var(--bg);
+      border-bottom:1px solid var(--border2);
+      position:sticky;top:0;z-index:40;scrollbar-width:none;
+    }
+    .mb-tabnav::-webkit-scrollbar{display:none}
+    .mb-tab{
+      flex:0 0 auto;padding:6px 13px;border-radius:100px;font-size:12px;white-space:nowrap;
+      background:var(--bg2);border:1px solid var(--border2);color:var(--muted);cursor:pointer;
+      transition:all .15s;
+    }
+    .mb-tab.active{background:var(--gold-dim);border-color:var(--border);color:var(--gold-lt)}
+    .mb-tab.interlude{opacity:.7;font-size:11px}
+
     /* ── Responsive ── */
     @media(max-width:768px){
       nav{padding:14px 18px}
@@ -682,6 +733,9 @@
       .hx-pg{height:auto;min-height:0}
       .hx-scroll{display:none}
       .mb-stream{display:block}
+      .nav-right{display:none}
+      .hx-zoomctl{display:none}
+      .mb-tabnav{display:flex;top:70px}
     }
   </style>
 </head>
@@ -690,7 +744,13 @@
 
 <!-- ── Nav ── -->
 <nav>
-  <span class="nav-logo" onclick="go(0)">ZCZ</span>
+  <div class="nav-logo-wrap" id="navLogoDl">
+    <span class="nav-logo" onclick="event.stopPropagation();document.getElementById('navLogoDl').classList.toggle('open')">ZCZ</span>
+    <div class="nav-dl-menu">
+      <a href="作品集汇总.md" download>MD 文档</a>
+      <a href="曾宸泽-个人网站内容汇总.pdf" download>PDF 文件</a>
+    </div>
+  </div>
   <ul class="nav-tabs" id="tabs">
     <li class="active" onclick="go(0)">介绍</li>
     <li onclick="go(1)">经历</li>
@@ -739,7 +799,7 @@
           <div class="stat-label">词 SFT 数据集</div>
         </div>
         <div class="stat-cell">
-          <div class="stat-num">65 篇</div>
+          <div class="stat-num">70 篇</div>
           <div class="stat-label">周反馈连续记录</div>
         </div>
       </div>
@@ -787,10 +847,10 @@
         其余每一条都有出处，来自入学第一周起从未中断的自我记录系统。悬停看摘要，点击看全文与时间跨度。
       </p>
       <div class="hx-meta-row">
-        <span class="chron-src"><strong>65 篇</strong> 周反馈</span>
+        <span class="chron-src"><strong>70 篇</strong> 周反馈</span>
         <span class="chron-src"><strong>3 张</strong> Kiss 复盘表</span>
         <span class="chron-src"><strong>「沐之悟」</strong> 公众号存档</span>
-        <span class="chron-src"><strong>22 个月</strong> 连续记录，仍在继续</span>
+        <span class="chron-src"><strong>24 个月</strong> 连续记录，仍在继续</span>
       </div>
       <div class="ft-bar" id="ftBar" hidden>
         <span class="ft-bar-label">轨道</span>
@@ -803,6 +863,7 @@
     </div>
     <!-- 时间线数据在 footprints.md，由页面底部脚本运行时渲染 -->
     <div class="hx-scroll" id="hxScroll"><div class="hx-canvas" id="hxCanvas"></div></div>
+    <div class="mb-tabnav" id="mbTabNav"></div>
     <div class="mb-stream" id="mbStream"></div>
   </div>
 
@@ -1143,14 +1204,14 @@
             它是我对"长期主义"最实际的践行。
           </p>
           <div class="weekly-stat-row">
-            <div class="wstat"><div class="n">65</div><div class="l">总篇数</div></div>
-            <div class="wstat"><div class="n">18</div><div class="l">大一上</div></div>
-            <div class="wstat"><div class="n">13</div><div class="l">大一下</div></div>
-            <div class="wstat"><div class="n">34</div><div class="l">大二</div></div>
+            <div class="wstat"><div class="n">70</div><div class="l">总篇数</div></div>
+            <div class="wstat"><div class="n">31</div><div class="l">大一</div></div>
+            <div class="wstat"><div class="n">36</div><div class="l">大二</div></div>
+            <div class="wstat"><div class="n">3</div><div class="l">大三上</div></div>
           </div>
           <div class="weekly-preview">
             <strong>最近一篇节选：</strong><br>
-            "如果说上一周是部分的结束，那这一周的结束会更完整，更彻底。这次选择结束合作，并不是情绪化的否定，而是一次理性的结案。这次吃亏是福。认错。然后，继续向前走。"
+            "这周处理了一批校招简历，两百多份。发现一个很好用的判断标准：一句话经历里，把'完成了'三个字删掉，看剩下的部分能不能独立成立——'效率提升23%'删了照样是完整的一句话，'完成了模块开发'删了就只剩一个空名词，前者是真发生过的事，后者是任务描述。"
           </div>
         </div>
       </div>
@@ -1232,11 +1293,14 @@
     cur = idx;
   }
 
-  document.querySelector('.nav-logo').onclick = () => go(0);
-
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' && cur < pages.length - 1) go(cur + 1);
     if (e.key === 'ArrowLeft'  && cur > 0) go(cur - 1);
+  });
+
+  document.addEventListener('click', e => {
+    const dl = document.getElementById('navLogoDl');
+    if (dl && dl.classList.contains('open') && !dl.contains(e.target)) dl.classList.remove('open');
   });
 </script>
 
@@ -1528,6 +1592,7 @@
         const mc = document.createElement('div');
         mc.className = 'mb-card' + (it.mile ? ' mile' : '') + (it.dim ? ' dim' : '') + (it.plan ? ' plan' : '');
         mc.dataset.track = it.track;
+        mc.style.setProperty('--tc', TRACKS[it.track].c);
         mc.innerHTML = metaHTML(it) + '<h4>' + esc(it.title) + '</h4>' + roleMetricsHTML(it)
           + it.body.map(b => '<p>' + esc(b) + '</p>').join('')
           + (it.src ? '<span class="ft-src">' + esc(it.src) + '</span>' : '')
@@ -1540,6 +1605,27 @@
       mb.appendChild(g);
       mgroups.push({el:g, c});
     });
+
+    /* ═══ 移动端章节 tab 导航 ═══ */
+    const tabnav = document.getElementById('mbTabNav');
+    mgroups.forEach(g => {
+      const t = document.createElement('div');
+      t.className = 'mb-tab' + (g.c.interlude ? ' interlude' : '');
+      t.textContent = g.c.name || g.c.kind || g.c.title;
+      t.onclick = () => g.el.scrollIntoView({behavior:'smooth', block:'start'});
+      tabnav.appendChild(t);
+      g.tab = t;
+    });
+    const tabObs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const g = mgroups.find(x => x.el === en.target);
+        if (!g) return;
+        mgroups.forEach(x => x.tab.classList.toggle('active', x === g));
+        g.tab.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      });
+    }, {root:page, rootMargin:'-45% 0px -45% 0px', threshold:0});
+    mgroups.forEach(g => tabObs.observe(g.el));
 
     /* ═══ 聚焦 ═══ */
     let focused = null;
