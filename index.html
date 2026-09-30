@@ -378,7 +378,7 @@
       border-left:2px dashed var(--gold);opacity:.5;z-index:3;pointer-events:none;
     }
     .hx-today .tl{
-      position:absolute;top:-17px;left:-14px;
+      position:absolute;top:-14px;left:-14px;
       font-size:10px;font-weight:700;color:var(--gold-lt);white-space:nowrap;
       background:var(--gold-dim);border:1px solid var(--border);border-radius:5px;padding:1px 6px;
     }
@@ -1858,7 +1858,15 @@
         : '<div class="pd">' + esc([c.kind, c.name, c.period].filter(Boolean).join(' · ')) + '</div>'
           + '<h3>' + esc(c.title) + '</h3>'
           + (c.sub ? '<div class="sb">' + esc(c.sub) + '</div>' : '');
-      R.chs.push({el:h, a:c.range.a, b:c.range.b});
+      R.chs.push({el:h, a:c.range.a, b:c.range.b, il:c.interlude});
+    });
+    // 章节区间可能重叠（规划层与实际学期），标题起点顺延到前一个标题之后，避免文字叠在一起
+    let hEnd = -Infinity;
+    R.chs.slice().sort((p, q) => p.a - q.a).forEach(c => {
+      if (c.il) { c.ha = c.a; return; }
+      c.ha = Math.max(c.a, hEnd + 1);
+      if (c.ha > c.b) c.el.style.display = 'none';
+      hEnd = Math.max(hEnd, c.b);
     });
     const colOf = m => {
       if (!R.cols[m]) R.cols[m] = {el:mk('hx-col'), m};
@@ -1926,7 +1934,7 @@
       R.bands.forEach(z => { z.el.style.left = X(z.a) + 'px'; z.el.style.width = (X(z.b + 1) - X(z.a)) + 'px'; });
       R.ticks.forEach(t => t.el.style.left = X(t.m) + 'px');
       R.ticklbs.forEach(t => t.el.style.left = X(t.m) + 'px');
-      R.chs.forEach(c => { c.el.style.left = (X(c.a) + 8) + 'px'; c.el.style.maxWidth = (X(c.b + 1) - X(c.a) - 16) + 'px'; });
+      R.chs.forEach(c => { c.el.style.left = (X(c.ha) + 8) + 'px'; c.el.style.maxWidth = (X(c.b + 1) - X(c.ha) - 16) + 'px'; });
       Object.values(R.cols).forEach(c => { c.el.style.left = (X(c.m) + 8) + 'px'; c.el.style.width = (colW - 18) + 'px'; });
       R.marks.forEach(mark => {
         mark.el.style.left = (X(mark.m) + colW / 2) + 'px';
@@ -2174,7 +2182,7 @@
       hxProg.style.transform = 'scaleX(' + (x / (parseFloat(canvas.style.width) || 1)) + ')';
       hl.textContent = fmt(Math.min(mx, mn + Math.floor(x / colW)));
       R.nodes.forEach(n => n.el.classList.toggle('lit', X(n.m) + colW / 2 <= x + 1));
-      R.chs.forEach(c => c.el.classList.toggle('cur', X(c.a) <= x && x < X(c.b + 1)));
+      R.chs.forEach(c => c.el.classList.toggle('cur', X(c.ha) <= x && x < X(c.b + 1)));
     }
     R.onLayout = () => { if (!hraf) hraf = requestAnimationFrame(updateHead); };
     scroller.addEventListener('scroll', R.onLayout, {passive:true});
