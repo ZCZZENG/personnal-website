@@ -907,6 +907,7 @@
     .weekly-preview{border-left:1px solid var(--border2);border-radius:12px;padding:18px 20px}
     .weekly-preview strong{color:var(--gold-lt);font-size:12px;letter-spacing:.06em}
     .ft-bar-label{white-space:nowrap;flex:none}
+    .hx-intro .hint-m{display:none}
     .closing{margin-top:128px;padding:96px 32px 88px;text-align:center;position:relative;border:1px solid var(--border2);border-radius:24px;
       background-color:var(--bg2);overflow:hidden}
     .closing::before{content:'';position:absolute;left:50%;top:-240px;width:720px;height:480px;margin-left:-360px;pointer-events:none;
@@ -979,7 +980,11 @@
       .book-cover{width:112px;flex:none;padding:14px 12px}
       .bc-t{font-size:15px}
       .bc-a{font-size:8.5px}
-      .listen-grid{grid-template-columns:1fr}
+      .listen-grid,.reading-grid{grid-template-columns:1fr}
+      .closing-sub{font-size:14px;line-height:1.8}
+      .hero-right .info-card{padding:18px 20px}
+      .hx-intro .hint-d{display:none}
+      .hx-intro .hint-m{display:inline}
       .article-card{grid-template-columns:44px minmax(0,1fr);padding:24px 4px}
       .ac-idx{font-size:20px}
       .closing{margin-top:80px;padding:64px 22px 56px;border-radius:20px}
@@ -1113,7 +1118,7 @@
       <h2 class="sh2">本科经历 · 大学足迹</h2>
       <p class="hx-intro">
         这条时间线不是简历——它还原大学真实走过的路：试错、链接、转向、做成。金色卡片是简历级里程碑，
-        其余每一条都有出处，来自入学第一周起从未中断的自我记录系统。悬停看摘要，点击看全文与时间跨度。
+        其余每一条都有出处，来自入学第一周起从未中断的自我记录系统。<span class="hint-d">悬停看摘要，点击看全文与时间跨度。</span><span class="hint-m">点击卡片展开全文、出处与时间跨度。</span>
       </p>
       <div class="hx-meta-row">
         <span class="chron-src"><strong>70 篇</strong> 周反馈</span>
